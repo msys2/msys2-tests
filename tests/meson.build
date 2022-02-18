@@ -1,0 +1,5 @@
+test('huge_val', executable('huge_val', 'huge_val.c'))
+test('snprintf_redef', executable('snprintf_redef', 'snprintf_redef.c'))
+test('quick_exit', executable('quick_exit', 'quick_exit.cpp'))
+test('exception_handling', executable('exception_handling', 'exception_handling.cpp'))
+test('printf_format', executable('printf_format', 'printf_format.c'))
