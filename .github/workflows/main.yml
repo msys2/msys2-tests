@@ -42,9 +42,11 @@ jobs:
           msys2 -c 'pacman --noconfirm -Suuy'
           msys2 -c 'pacman --noconfirm -Suu'
 
-      - name: Run Tests
+      - name: Run Toolchain Tests
         shell: msys2 {0}
         run: |
+          cd toolchain
           meson _build --werror
           meson compile -C _build
           meson test -C _build
+
