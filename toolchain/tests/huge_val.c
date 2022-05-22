@@ -5,7 +5,9 @@
 #include <stdio.h>
 
 int main(void) {
+#ifdef _WIN32
   char buffer [100];
   snprintf(buffer, 100, "%f %f", _HUGE, HUGE_VAL);
+#endif
   return 0;
 }
