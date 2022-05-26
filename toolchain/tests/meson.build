@@ -4,3 +4,8 @@ test('quick_exit', executable('quick_exit', 'quick_exit.cpp'))
 test('exception_handling', executable('exception_handling', 'exception_handling.cpp'))
 test('printf_format', executable('printf_format', 'printf_format.c'))
 test('pch', executable('pch', 'pch.cpp', cpp_pch : 'pch/pch.hpp'))
+
+openmp = dependency('openmp')
+env = environment()
+env.set('OMP_NUM_THREADS', '1')
+test('openmp_for_if', executable('openmp_for_if', 'openmp_for_if.c', dependencies : [openmp]), env : env)
