@@ -35,6 +35,7 @@ jobs:
             ${{ matrix.prefix }}-meson
             ${{ matrix.prefix }}-ninja
             ${{ matrix.prefix }}-openmp
+            ${{ matrix.prefix }}-${{ matrix.msystem != 'CLANG32' && 'rust' || 'cc' }}
             ${{ matrix.prefix }}-cc
 
       - uses: msys2/setup-msys2@v2
@@ -65,3 +66,9 @@ jobs:
           meson compile -C _build
           meson test -C _build
 
+      - name: Run Rust Tests
+        if: ${{ matrix.msystem != 'MSYS' && matrix.msystem != 'CLANG32' }}
+        shell: msys2 {0}
+        run: |
+          cd rust
+          ./test.sh
