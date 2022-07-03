@@ -37,6 +37,8 @@ jobs:
             ${{ matrix.prefix }}-openmp
             ${{ matrix.prefix }}-${{ matrix.msystem != 'CLANG32' && 'rust' || 'cc' }}
             ${{ matrix.prefix }}-cc
+            ${{ matrix.prefix }}-python
+            ${{ matrix.prefix }}-python-setuptools
 
       - uses: msys2/setup-msys2@v2
         if: ${{ matrix.msystem == 'MSYS' }}
@@ -47,6 +49,8 @@ jobs:
             meson
             ninja
             gcc
+            python
+            python-setuptools
 
       - name: Add staging repo
         shell: msys2 {0}
@@ -71,4 +75,10 @@ jobs:
         shell: msys2 {0}
         run: |
           cd rust
+          ./test.sh
+
+      - name: Run Python Tests
+        shell: msys2 {0}
+        run: |
+          cd python/setuptools-cext
           ./test.sh
