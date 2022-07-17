@@ -70,9 +70,7 @@ jobs:
         shell: msys2 {0}
         run: |
           cd toolchain
-          meson _build --werror
-          meson compile -C _build
-          meson test -C _build
+          ./test.sh
 
       - name: Run Rust Tests
         if: ${{ matrix.msystem != 'MSYS' && matrix.msystem != 'CLANG32' }}
