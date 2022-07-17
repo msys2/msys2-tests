@@ -13,16 +13,20 @@ jobs:
       fail-fast: false
       matrix:
         include: [
-          { msystem: MINGW64, prefix:  mingw-w64-x86_64 },
-          { msystem: MINGW32, prefix:  mingw-w64-i686 },
-          { msystem: UCRT64,  prefix:  mingw-w64-ucrt-x86_64 },
-          { msystem: CLANG32, prefix:  mingw-w64-clang-i686 },
-          { msystem: CLANG64, prefix:  mingw-w64-clang-x86_64 },
-          { msystem: MSYS },
+          { msystem: MINGW64, prefix:  mingw-w64-x86_64, cc: gcc, cxx: g++ },
+          { msystem: MINGW32, prefix:  mingw-w64-i686, cc: gcc, cxx: g++ },
+          { msystem: UCRT64,  prefix:  mingw-w64-ucrt-x86_64, cc: gcc, cxx: g++ },
+          { msystem: UCRT64,  prefix:  mingw-w64-ucrt-x86_64, cc: clang, cxx: clang++ },
+          { msystem: CLANG32, prefix:  mingw-w64-clang-i686, cc: clang, cxx: clang++ },
+          { msystem: CLANG64, prefix:  mingw-w64-clang-x86_64, cc: clang, cxx: clang++ },
+          { msystem: MSYS, cc: gcc, cxx: g++ },
         ]
 
-    name: ${{ matrix.msystem }}
+    name: ${{ matrix.msystem }}-${{ matrix.cc }}
     runs-on: windows-2022
+    env:
+      CC: ${{ matrix.cc }}
+      CXX: ${{ matrix.cxx }}
     steps:
       - uses: actions/checkout@v2
 
@@ -34,9 +38,9 @@ jobs:
           install: >-
             ${{ matrix.prefix }}-meson
             ${{ matrix.prefix }}-ninja
-            ${{ matrix.prefix }}-openmp
-            ${{ matrix.prefix }}-${{ matrix.msystem != 'CLANG32' && 'rust' || 'cc' }}
-            ${{ matrix.prefix }}-cc
+            ${{ matrix.prefix }}-${{ matrix.cc != 'gcc' && 'openmp' || 'ninja'}}
+            ${{ matrix.prefix }}-${{ matrix.msystem != 'CLANG32' && 'rust' || 'ninja'}}
+            ${{ matrix.prefix }}-${{ matrix.cc }}
             ${{ matrix.prefix }}-python
             ${{ matrix.prefix }}-python-setuptools
 
