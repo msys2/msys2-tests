@@ -2,5 +2,5 @@
 
 set -e
 
-CC=cc python setup.py build_ext --force --inplace
+CC=${CC:-cc} python setup.py build_ext --force --inplace
 python test.py
