@@ -38,6 +38,8 @@ jobs:
           install: >-
             ${{ matrix.prefix }}-meson
             ${{ matrix.prefix }}-ninja
+            ${{ matrix.prefix }}-cmake
+            ${{ matrix.prefix }}-make
             ${{ matrix.prefix }}-${{ matrix.cc != 'gcc' && 'openmp' || 'ninja'}}
             ${{ matrix.prefix }}-${{ matrix.cc != 'gcc' && 'lld' || 'ninja'}}
             ${{ matrix.prefix }}-${{ matrix.cc != 'gcc' && 'libc++' || 'ninja'}}
@@ -45,6 +47,7 @@ jobs:
             ${{ matrix.prefix }}-${{ matrix.cc }}
             ${{ matrix.prefix }}-python
             ${{ matrix.prefix }}-python-setuptools
+            make
 
       - uses: msys2/setup-msys2@v2
         if: ${{ matrix.msystem == 'MSYS' }}
@@ -54,6 +57,8 @@ jobs:
           install: >-
             meson
             ninja
+            cmake
+            make
             gcc
             python
             python-setuptools
@@ -85,4 +90,10 @@ jobs:
         shell: msys2 {0}
         run: |
           cd python/setuptools-cext
+          ./test.sh
+
+      - name: Run CMake Tests
+        shell: msys2 {0}
+        run: |
+          cd cmake
           ./test.sh
