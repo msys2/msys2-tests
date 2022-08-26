@@ -14,3 +14,5 @@ test('pow', executable('pow', 'pow.c', c_args: ['-fno-builtin', '-fno-strict-ali
 windres_res = import('windows').compile_resources('windres.rc')
 windres = executable('windres', 'windres.c', windres_res)
 test('windres', windres)
+
+test('call_once', executable('call_once', 'call_once.cpp'))
