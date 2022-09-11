@@ -47,6 +47,7 @@ jobs:
             ${{ matrix.prefix }}-${{ matrix.cc }}
             ${{ matrix.prefix }}-python
             ${{ matrix.prefix }}-python-setuptools
+            ${{ matrix.prefix }}-autotools
             make
 
       - uses: msys2/setup-msys2@v2
@@ -62,6 +63,7 @@ jobs:
             gcc
             python
             python-setuptools
+            autotools
 
       - name: Add staging repo
         shell: msys2 {0}
@@ -96,4 +98,10 @@ jobs:
         shell: msys2 {0}
         run: |
           cd cmake
+          ./test.sh
+
+      - name: Run Autotools Tests
+        shell: msys2 {0}
+        run: |
+          cd autotools
           ./test.sh
