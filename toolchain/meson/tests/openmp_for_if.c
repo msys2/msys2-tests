@@ -2,7 +2,7 @@
 // https://github.com/msys2/MINGW-packages/issues/11730#issuecomment-1138721344
 // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105745
 
-int main() {
+int main(void) {
     #pragma omp parallel for if (0)
     for (int idx = 0; idx < 0; ++idx) { }
     #pragma omp for schedule(dynamic)
