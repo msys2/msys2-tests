@@ -75,33 +75,7 @@ jobs:
           msys2 -c 'pacman --noconfirm -Suuy'
           msys2 -c 'pacman --noconfirm -Suu'
 
-      - name: Run Toolchain Tests
+      - name: Run Tests
         shell: msys2 {0}
         run: |
-          cd toolchain
-          ./test.sh
-
-      - name: Run Rust Tests
-        if: ${{ matrix.msystem != 'MSYS' && matrix.msystem != 'CLANG32' }}
-        shell: msys2 {0}
-        run: |
-          cd rust
-          ./test.sh
-
-      - name: Run Python Tests
-        shell: msys2 {0}
-        run: |
-          cd python/setuptools-cext
-          ./test.sh
-
-      - name: Run CMake Tests
-        shell: msys2 {0}
-        run: |
-          cd cmake
-          ./test.sh
-
-      - name: Run Autotools Tests
-        shell: msys2 {0}
-        run: |
-          cd autotools
-          ./test.sh
+          make -j
