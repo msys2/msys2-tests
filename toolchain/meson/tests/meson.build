@@ -16,3 +16,5 @@ windres = executable('windres', 'windres.c', windres_res)
 test('windres', windres)
 
 test('call_once', executable('call_once', 'call_once.cpp'))
+
+test('undef_memrchr', executable('undef_memrchr', 'undef_memrchr.c', c_args: ['-O3']))
