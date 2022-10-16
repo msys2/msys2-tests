@@ -1,6 +1,6 @@
-.PHONY: toolchain rust python cmake autotools
+.PHONY: toolchain rust python cmake autotools golang
 
-all: toolchain rust python cmake autotools
+all: toolchain rust python cmake autotools golang
 
 toolchain:
 	(cd toolchain && ./test.sh)
@@ -16,3 +16,6 @@ cmake:
 
 autotools:
 	(cd autotools && ./test.sh)
+
+golang:
+	(cd golang && ./test.sh)
