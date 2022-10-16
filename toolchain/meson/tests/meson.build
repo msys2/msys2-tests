@@ -18,3 +18,5 @@ test('windres', windres)
 test('call_once', executable('call_once', 'call_once.cpp'))
 
 test('undef_memrchr', executable('undef_memrchr', 'undef_memrchr.c', c_args: ['-O3']))
+
+test('stpcpy_fortify', executable('stpcpy_fortify', 'stpcpy_fortify.c', c_args: ['-O3', '-D_FORTIFY_SOURCE=2']))
