@@ -13,13 +13,13 @@ jobs:
       fail-fast: false
       matrix:
         include: [
-          { msystem: MINGW64, prefix:  mingw-w64-x86_64, cc: gcc, cxx: g++ },
-          { msystem: MINGW32, prefix:  mingw-w64-i686, cc: gcc, cxx: g++ },
-          { msystem: UCRT64,  prefix:  mingw-w64-ucrt-x86_64, cc: gcc, cxx: g++ },
-          { msystem: UCRT64,  prefix:  mingw-w64-ucrt-x86_64, cc: clang, cxx: clang++ },
+          { msystem: MINGW64, prefix:  mingw-w64-x86_64, cc: gcc, cxx: g++, fc: gfortran },
+          { msystem: MINGW32, prefix:  mingw-w64-i686, cc: gcc, cxx: g++, fc: gfortran },
+          { msystem: UCRT64,  prefix:  mingw-w64-ucrt-x86_64, cc: gcc, cxx: g++, fc: gfortran },
+          { msystem: UCRT64,  prefix:  mingw-w64-ucrt-x86_64, cc: clang, cxx: clang++, fc: flang-new },
           { msystem: CLANG32, prefix:  mingw-w64-clang-i686, cc: clang, cxx: clang++ },
-          { msystem: CLANG64, prefix:  mingw-w64-clang-x86_64, cc: clang, cxx: clang++ },
-          { msystem: MSYS, cc: gcc, cxx: g++ },
+          { msystem: CLANG64, prefix:  mingw-w64-clang-x86_64, cc: clang, cxx: clang++, fc: flang-new },
+          { msystem: MSYS, cc: gcc, cxx: g++, fc: gfortran },
         ]
 
     name: ${{ matrix.msystem }}-${{ matrix.cc }}
@@ -27,6 +27,7 @@ jobs:
     env:
       CC: ${{ matrix.cc }}
       CXX: ${{ matrix.cxx }}
+      FC: ${{ matrix.fc }}
     steps:
       - uses: actions/checkout@v3
 
@@ -44,6 +45,8 @@ jobs:
             ${{ matrix.prefix }}-${{ matrix.cc != 'gcc' && 'lld' || 'ninja'}}
             ${{ matrix.prefix }}-${{ matrix.cc != 'gcc' && 'libc++' || 'ninja'}}
             ${{ matrix.prefix }}-${{ matrix.msystem != 'CLANG32' && 'rust' || 'ninja'}}
+            ${{ matrix.prefix }}-${{ matrix.fc == 'gfortran' && 'gcc-fortran' || 'ninja'}}
+            ${{ matrix.prefix }}-${{ matrix.fc == 'flang-new' && 'flang' || 'ninja'}}
             ${{ matrix.prefix }}-${{ matrix.cc }}
             ${{ matrix.prefix }}-python
             ${{ matrix.prefix }}-python-setuptools
@@ -62,6 +65,7 @@ jobs:
             cmake
             make
             gcc
+            gcc-fortran
             python
             python-setuptools
             autotools
