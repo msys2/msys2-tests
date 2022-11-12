@@ -44,10 +44,10 @@ jobs:
             ${{ matrix.prefix }}-${{ matrix.cc != 'gcc' && 'openmp' || 'ninja'}}
             ${{ matrix.prefix }}-${{ matrix.cc != 'gcc' && 'lld' || 'ninja'}}
             ${{ matrix.prefix }}-${{ matrix.cc != 'gcc' && 'libc++' || 'ninja'}}
-            ${{ matrix.prefix }}-${{ matrix.msystem != 'CLANG32' && 'rust' || 'ninja'}}
             ${{ matrix.prefix }}-${{ matrix.fc == 'gfortran' && 'gcc-fortran' || 'ninja'}}
             ${{ matrix.prefix }}-${{ matrix.fc == 'flang-new' && 'flang' || 'ninja'}}
             ${{ matrix.prefix }}-${{ matrix.cc }}
+            ${{ matrix.prefix }}-rust
             ${{ matrix.prefix }}-python
             ${{ matrix.prefix }}-python-setuptools
             ${{ matrix.prefix }}-autotools
