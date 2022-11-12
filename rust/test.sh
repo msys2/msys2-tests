@@ -2,7 +2,7 @@
 
 set -e
 
-if [[ "$MSYSTEM" == "MSYS" ]] || [[ "$MSYSTEM" == "CLANG32" ]]; then
+if [[ "$MSYSTEM" == "MSYS" ]]; then
     echo "skipped on $MSYSTEM"
     exit 0;
 fi
