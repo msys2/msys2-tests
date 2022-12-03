@@ -1,6 +1,6 @@
-.PHONY: toolchain rust python cmake autotools golang fortran
+.PHONY: toolchain rust python cmake autotools golang fortran ruby
 
-all: toolchain rust python cmake autotools golang fortran
+all: toolchain rust python cmake autotools golang fortran ruby
 
 toolchain:
 	(cd toolchain && ./test.sh)
@@ -22,3 +22,6 @@ golang:
 
 fortran:
 	(cd fortran && ./test.sh)
+
+ruby:
+	(cd ruby && ./test.sh)

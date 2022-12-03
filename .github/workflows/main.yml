@@ -52,6 +52,7 @@ jobs:
             ${{ matrix.prefix }}-python-setuptools
             ${{ matrix.prefix }}-autotools
             ${{ matrix.prefix }}-go
+            ${{ matrix.prefix }}-ruby
             make
 
       - uses: msys2/setup-msys2@v2
@@ -69,6 +70,7 @@ jobs:
             python
             python-setuptools
             autotools
+            ruby
 
       - name: Add staging repo
         shell: msys2 {0}
