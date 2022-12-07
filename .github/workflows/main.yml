@@ -73,6 +73,7 @@ jobs:
             autotools
             ruby
             perl
+            mingw-w64-cross-gcc
 
       - name: Add staging repo
         shell: msys2 {0}
