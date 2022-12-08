@@ -54,6 +54,7 @@ jobs:
             ${{ matrix.prefix }}-go
             ${{ matrix.prefix }}-ruby
             ${{ matrix.prefix }}-perl
+            ${{ matrix.prefix }}-nodejs
             make
 
       - uses: msys2/setup-msys2@v2
