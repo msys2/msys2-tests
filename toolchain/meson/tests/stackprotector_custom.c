@@ -12,7 +12,7 @@ void __stack_chk_fail(void)
 
 void get_input(char *data)
 {
-    strcpy(data, "01234567");
+    strcpy(data, "01234567890123456789");
 }
 
 int main(void)
