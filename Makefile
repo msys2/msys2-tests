@@ -9,7 +9,7 @@ rust:
 	(cd rust && ./test.sh)
 
 python:
-	(cd python/setuptools-cext && ./test.sh)
+	(cd python && ./test.sh)
 
 cmake:
 	(cd cmake && ./test.sh)
