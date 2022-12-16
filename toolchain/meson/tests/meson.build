@@ -22,3 +22,5 @@ test('undef_memrchr', executable('undef_memrchr', 'undef_memrchr.c', c_args: ['-
 test('stpcpy_fortify', executable('stpcpy_fortify', 'stpcpy_fortify.c', c_args: ['-O3', '-D_FORTIFY_SOURCE=2']))
 
 test('stackprotector_custom', executable('stackprotector_custom', 'stackprotector_custom.c', c_args: ['-O0', '-fstack-protector-strong']))
+
+test('cygwin_wmemset', executable('cygwin_wmemset', 'cygwin_wmemset.c'))
