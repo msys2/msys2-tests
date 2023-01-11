@@ -24,3 +24,5 @@ test('stpcpy_fortify', executable('stpcpy_fortify', 'stpcpy_fortify.c', c_args: 
 test('stackprotector_custom', executable('stackprotector_custom', 'stackprotector_custom.c', c_args: ['-O0', '-fstack-protector-strong']))
 
 test('cygwin_wmemset', executable('cygwin_wmemset', 'cygwin_wmemset.c'))
+
+test('posix_sem', executable('posix_sem', 'posix_sem.c', dependencies: [dependency('threads')]))
