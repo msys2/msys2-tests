@@ -26,3 +26,5 @@ test('stackprotector_custom', executable('stackprotector_custom', 'stackprotecto
 test('cygwin_wmemset', executable('cygwin_wmemset', 'cygwin_wmemset.c'))
 
 test('posix_sem', executable('posix_sem', 'posix_sem.c', dependencies: [dependency('threads')]))
+
+test('posix_sem_named', executable('posix_sem_named', 'posix_sem_named.c', dependencies: [dependency('threads')]))
