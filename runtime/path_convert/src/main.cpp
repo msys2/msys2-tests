@@ -192,6 +192,10 @@ static const test_data datas[] = {
     ,{"/64/shlib/libgcc_s.a.tmp", "" MSYSROOT2 "/64/shlib/libgcc_s.a.tmp", false}
     ,{"-DVERSION_SOURCES=VERSION;C:/repo/mingw-w64-innoextract/src/innoextract-1.5/VERSION;LICENSE;C:/repo/mingw-w64-innoextract/src/innoextract-1.5/LICENSE", "-DVERSION_SOURCES=VERSION;C:/repo/mingw-w64-innoextract/src/innoextract-1.5/VERSION;LICENSE;C:/repo/mingw-w64-innoextract/src/innoextract-1.5/LICENSE", false}
     ,{"'-DVERSION_SOURCES=VERSION;C:/repo/mingw-w64-innoextract/src/innoextract-1.5/VERSION;LICENSE;C:/repo/mingw-w64-innoextract/src/innoextract-1.5/LICENSE'", "'-DVERSION_SOURCES=VERSION;C:/repo/mingw-w64-innoextract/src/innoextract-1.5/VERSION;LICENSE;C:/repo/mingw-w64-innoextract/src/innoextract-1.5/LICENSE'", false}
+    // some spaces in unix paths: https://github.com/git-for-windows/msys2-runtime/commit/0b2d287629
+    ,{"/foo bar", MSYSROOT2 "/foo bar", false}
+    ,{"/foo bar:/baz quux", MSYSROOT "\\foo bar;" MSYSROOT "\\baz quux", false}
+    ,{"/trash directory.t0123-blub:/", MSYSROOT "\\trash directory.t0123-blub;" MSYSROOT "\\", false}
     ,{0, 0, false}
 };
 

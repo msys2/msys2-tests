@@ -39,6 +39,16 @@ class Tests(unittest.TestCase):
         parsed = parse_echo([], {'FOO': '/'})[1]['FOO']
         self.assertEqual(root, parsed)
 
+    def test_with_spaces(self):
+        # https://github.com/git-for-windows/msys2-runtime/commit/0b2d287629
+        mroot = cygpath('-m', '/')
+        parsed = parse_echo(['/foo bar'], {})[0][0]
+        self.assertEqual(parsed, mroot + "foo bar")
+
+        wroot = cygpath('-w', '/')
+        parsed = parse_echo(['/foo bar:/baz quux'], {})[0][0]
+        self.assertEqual(parsed, wroot + "foo bar;" + wroot + "baz quux")
+
 
 def suite():
     return unittest.TestLoader().loadTestsFromName(__name__)
