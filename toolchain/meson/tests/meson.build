@@ -30,3 +30,24 @@ test('posix_sem', executable('posix_sem', 'posix_sem.c', dependencies: [dependen
 test('posix_sem_named', executable('posix_sem_named', 'posix_sem_named.c', dependencies: [dependency('threads')]))
 
 test('posix_shm', executable('posix_shm', 'posix_shm.c'))
+
+compiler = meson.get_compiler('c')
+if compiler.get_id() == 'clang' and compiler.get_linker_id() == 'ld.lld'
+    guard_none = executable('guard_none', 'cfguard-test.c', c_args: ['-mguard=none'], link_args: ['-Wl,-Xlink,-guard:no'])
+    test('guard_none-check_enabled', guard_none, args : ['check_enabled'], should_fail: true)
+    test('guard_none-normal_icall', guard_none, args : ['normal_icall'])
+    test('guard_none-invalid_icall', guard_none, args : ['invalid_icall'])
+    test('guard_none-invalid_icall_nocf', guard_none, args : ['invalid_icall_nocf'])
+
+    guard_cf = executable('guard_cf', 'cfguard-test.c', c_args: ['-mguard=cf'], link_args: ['-Wl,-Xlink,-guard:cf'])
+    test('guard_cf-check_enabled', guard_cf, args : ['check_enabled'])
+    test('guard_cf-normal_icall', guard_cf, args : ['normal_icall'])
+    test('guard_cf-invalid_icall', guard_cf, args : ['invalid_icall'], should_fail: true)
+    test('guard_cf-invalid_icall_nocf', guard_cf, args : ['invalid_icall_nocf'])
+
+    guard_cf_nochecks = executable('guard_cf_nochecks', 'cfguard-test.c', c_args: ['-mguard=cf-nochecks'], link_args: ['-Wl,-Xlink,-guard:cf'])
+    test('guard_cf_nochecks-check_enabled', guard_cf_nochecks, args : ['check_enabled'])
+    test('guard_cf_nochecks-normal_icall', guard_cf_nochecks, args : ['normal_icall'])
+    test('guard_cf_nochecks-invalid_icall', guard_cf_nochecks, args : ['invalid_icall'])
+    test('guard_cf_nochecks-invalid_icall_nocf', guard_cf_nochecks, args : ['invalid_icall_nocf'])
+endif
