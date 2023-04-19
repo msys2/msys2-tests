@@ -5,17 +5,13 @@ SPDX-License-Identifier: CC0-1.0
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef __MSYS__
-# include <sys/cygwin.h>
-#endif
 #include <ctype.h>
 
+#include <sys/cygwin.h>
 #include "path_conv.h"
 
-#ifndef __MSYS__
-static const char* ROOT_PATH = "C:/msys32";
-#include <unistd.h>
-#endif
+#define debug_printf(...) fprintf (stderr, __VA_ARGS__)
+#define system_printf(...) fprintf (stderr, __VA_ARGS__)
 
 typedef enum PATH_TYPE_E {
     NONE = 0,
@@ -95,6 +91,7 @@ void find_end_of_rooted_path(const char** from, const char** to, int* in_string)
 void sub_convert(const char** from, const char** to, char** dst, const char* dstend, int* in_string) {
     const char* copy_from = *from;
     path_type type = find_path_start_and_type(from, false, *to);
+    debug_printf("found type %d for path %s", type, copy_from);
 
     if (type == POSIX_PATH_LIST) {
         find_end_of_posix_list(to, in_string);
@@ -161,9 +158,13 @@ const char* convert(char *dst, size_t dstlen, const char *src) {
     }
 
     sub_convert(&srcbeg, &srcit, &dstit, dstend, &in_string);
+    if (!*srcit) {
+      *dstit = '\0';
+      return dst;
+    }
     srcbeg = srcit + 1;
     for (; *srcit != '\0'; ++srcit) {
-        continue;
+      continue;
     }
     copy_to_dst(srcbeg, srcit, &dstit, dstend);
     *dstit = '\0';
@@ -193,8 +194,10 @@ path_type find_path_start_and_type(const char** src, int recurse, const char* en
 
     if (*it == '\0' || it == end) return NONE;
 
-    if (!isalnum(*it) && *it != '/' && *it != '\\' && *it != ':' && *it != '-' && *it != '.') {
-        return find_path_start_and_type(move(src, 1), true, end);
+    while (!isalnum(*it) && *it != '/' && *it != '\\' && *it != ':' && *it != '-' && *it != '.') {
+        recurse = true;
+        it = ++*src;
+        if (it == end || *it == '\0') return NONE;
     }
 
     path_type result = NONE;
@@ -231,25 +234,19 @@ path_type find_path_start_and_type(const char** src, int recurse, const char* en
         if (*it == '/') {
             it += 1;
             switch(*it) {
-            case ':':
-                return URL;
-            case '/':
-                return ESCAPED_PATH;
+              case ':': return URL;
+              case '/': return ESCAPED_PATH;
             }
             if (memchr(it, '/', end - it))
-                return UNC;
+              return UNC;
             else
-                return ESCAPED_PATH;
+              return ESCAPED_PATH;
         }
 
         for (; *it != '\0' && it != end; ++it) {
             switch(*it) {
-            case ':': {
-                char ch = *(it + 1);
-                if (ch == '/' || ch == ':' || ch == '.') return POSIX_PATH_LIST;
-            }
-            case ';':
-                return WINDOWS_PATH_LIST;
+                case ':': {char ch = *(it + 1); if (ch == '/' || ch == ':' || ch == '.') return POSIX_PATH_LIST;} return WINDOWS_PATH_LIST;
+                case ';': return WINDOWS_PATH_LIST;
             }
         }
 
@@ -263,44 +260,16 @@ path_type find_path_start_and_type(const char** src, int recurse, const char* en
     int starts_with_minus = 0;
     int starts_with_minus_alpha = 0;
     if (*it == '-') {
-        starts_with_minus = 1;
+      starts_with_minus = 1;
+      it += 1;
+      if (isalpha(*it)) {
         it += 1;
-        if (isalpha(*it)) {
-            it += 1;
-            starts_with_minus_alpha = 1;
-        }
+        starts_with_minus_alpha = 1;
         if (memchr(it, ';', end - it)) {
-            return WINDOWS_PATH_LIST;
+        	return WINDOWS_PATH_LIST;
         }
+      }
     }
-
-    /*if (starts_with_minus) {
-        char n1 =      *(it + 1);
-        char n2 = n1 ? *(it + 2) : '\0';
-        char n3 = n2 ? *(it + 3) : '\0';
-        char n4 = n3 ? *(it + 4) : '\0';
-        char n5 = n4 ? *(it + 5) : '\0';
-
-        if (isalpha(n1) && n2 == '/') {
-            it += 2;
-            result = ROOTED_PATH;
-        } else if ((n2 == '\'' || n2 == '"') && n3 == '/') {
-            it += 3;
-            starts_with_minus = false;
-            result = ROOTED_PATH;
-        }
-
-        if (isalpha(n2) && n3 == ':' && n4 == '/') {
-            *src = it + 2;
-            return SIMPLE_WINDOWS_PATH;
-        }
-
-        if ((n2 == '\'' || n2 == '"') && isalpha(n3) && n4 == ':' && n5 == '/') {
-            *src = it + 3;
-            starts_with_minus = false;
-            return SIMPLE_WINDOWS_PATH;
-        }
-    }*/
 
     for (const char* it2 = it; *it2 != '\0' && it2 != end; ++it2) {
         char ch = *it2;
@@ -316,17 +285,17 @@ path_type find_path_start_and_type(const char** src, int recurse, const char* en
         }
         if (ch == '\'' || ch == '"')
             starts_with_minus = false;
-        if ((ch == '=') || (ch == ':' && starts_with_minus) || ch == '\'' || ch == '"') {
+        if ((ch == '=') || (ch == ':' && starts_with_minus) || ((ch == '\'' || ch == '"') && result == NONE)) {
             *src = it2 + 1;
             return find_path_start_and_type(src, true, end);
         }
 
-        if (ch == ',' /*&& starts_with_minus*/) {
+        if (ch == ',' && starts_with_minus) {
             *src = it2 + 1;
             return find_path_start_and_type(src, true, end);
         }
 
-        if (ch == ':') {
+        if (ch == ':' && it2 + 1 != end) {
             it2 += 1;
             ch = *it2;
             if (ch == '/' || ch == ':' || ch == '.') {
@@ -351,36 +320,18 @@ path_type find_path_start_and_type(const char** src, int recurse, const char* en
 
 void convert_path(const char** from, const char* to, path_type type, char** dst, const char* dstend) {
     switch(type) {
-    case SIMPLE_WINDOWS_PATH:
-        swp_convert(from, to, dst, dstend);
-        break;
-    case ESCAPE_WINDOWS_PATH:
-        ewp_convert(from, to, dst, dstend);
-        break;
-    case WINDOWS_PATH_LIST:
-        wpl_convert(from, to, dst, dstend);
-        break;
-    case RELATIVE_PATH:
-        swp_convert(from, to, dst, dstend);
-        break;
-    case UNC:
-        unc_convert(from, to, dst, dstend);
-        break;
-    case ESCAPED_PATH:
-        ep_convert(from, to, dst, dstend);
-        break;
-    case ROOTED_PATH:
-        rp_convert(from, to, dst, dstend);
-        break;
-    case URL:
-        url_convert(from, to, dst, dstend);
-        break;
-    case POSIX_PATH_LIST:
-        ppl_convert(from, to, dst, dstend);
-        break;
-    case NONE: // prevent warnings;
-    default:
-        return;
+        case SIMPLE_WINDOWS_PATH: swp_convert(from, to, dst, dstend); break;
+        case ESCAPE_WINDOWS_PATH: ewp_convert(from, to, dst, dstend); break;
+        case WINDOWS_PATH_LIST: wpl_convert(from, to, dst, dstend); break;
+        case RELATIVE_PATH: swp_convert(from, to, dst, dstend); break;
+        case UNC: unc_convert(from, to, dst, dstend); break;
+        case ESCAPED_PATH: ep_convert(from, to, dst, dstend); break;
+        case ROOTED_PATH: rp_convert(from, to, dst, dstend); break;
+        case URL: url_convert(from, to, dst, dstend); break;
+        case POSIX_PATH_LIST: ppl_convert(from, to, dst, dstend); break;
+        case NONE: // prevent warnings;
+        default:
+                return;
     }
 }
 
@@ -439,7 +390,7 @@ void url_convert(const char** from, const char* to, char** dst, const char* dste
 
 void subp_convert(const char** from, const char* end, int is_url, char** dst, const char* dstend) {
     const char* begin = *from;
-    path_type type = find_path_start_and_type(from, 0, end);
+    path_type type = is_url ? URL : find_path_start_and_type(from, 0, end);
     copy_to_dst(begin, *from, dst, dstend);
 
     if (type == NONE) {
@@ -469,16 +420,23 @@ void ppl_convert(const char** from, const char* to, char** dst, const char* dste
             if (prev_was_simc) {
                 continue;
             }
-            if (*(it + 1) == '/' && *(it + 2) == '/') {
+            if (*(it + 1) == '/' && *(it + 2) == '/' && isalpha(*beg)) {
                 is_url = 1;
-                continue;
+                /* double-check: protocol must be alnum (or +) */
+                for (const char *p = beg; p != it; ++p)
+                    if (!isalnum(*p) && *p != '+') {
+                        is_url = 0;
+                        break;
+                    }
+                if (is_url)
+                    continue;
             }
             prev_was_simc = 1;
             subp_convert(&beg, it, is_url, dst, dstend);
             is_url = 0;
 
             if (*dst == dstend) {
-                printf("Path cut off during conversion: %s\n", orig_dst);
+                system_printf("Path cut off during conversion: %s\n", orig_dst);
                 break;
             }
 
@@ -507,8 +465,6 @@ int is_special_posix_path(const char* from, const char* to, char** dst, const ch
     return false;
 }
 
-#ifdef __MSYS__
-
 void posix_to_win32_path(const char* from, const char* to, char** dst, const char* dstend) {
     if ( from != to ) {
         char *one_path = (char*)alloca(to-from+1);
@@ -527,19 +483,3 @@ void posix_to_win32_path(const char* from, const char* to, char** dst, const cha
         }
     }
 }
-
-#else
-
-void posix_to_win32_path(const char* from, const char* to, char** dst, const char* dstend) {
-    copy_to_dst(ROOT_PATH, NULL, dst, dstend);
-
-    for (; (*from != '\0' && from != to) && (*dst != dstend); ++from, ++(*dst)) {
-        if (*from == '\\') {
-            **dst = '/';
-        } else {
-            **dst = *from;
-        }
-    }
-}
-
-#endif
