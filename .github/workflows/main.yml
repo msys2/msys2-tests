@@ -41,6 +41,7 @@ jobs:
             ${{ matrix.prefix }}-ninja
             ${{ matrix.prefix }}-cmake
             ${{ matrix.prefix }}-make
+            ${{ matrix.prefix }}-${{ matrix.cc == 'gcc' && 'gcc-ada' || 'ninja'}}
             ${{ matrix.prefix }}-${{ matrix.cc != 'gcc' && 'openmp' || 'ninja'}}
             ${{ matrix.prefix }}-${{ matrix.cc != 'gcc' && 'lld' || 'ninja'}}
             ${{ matrix.prefix }}-${{ matrix.cc != 'gcc' && 'libc++' || 'ninja'}}
