@@ -9,3 +9,6 @@ fi
 
 gnatmake hello.adb
 ./hello.exe
+
+gnatmake gnat_exception_internal.adb
+./gnat_exception_internal.exe
