@@ -51,3 +51,5 @@ if compiler.get_id() == 'clang' and compiler.get_linker_id() == 'ld.lld'
     test('guard_cf_nochecks-invalid_icall', guard_cf_nochecks, args : ['invalid_icall'])
     test('guard_cf_nochecks-invalid_icall_nocf', guard_cf_nochecks, args : ['invalid_icall_nocf'])
 endif
+
+subdir('def-undec-stdcall')
