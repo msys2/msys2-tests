@@ -1,0 +1,15 @@
+
+_realname=mingw-dummy
+pkgbase=mingw-w64-${_realname}
+pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}")
+pkgver=0
+pkgrel=1
+pkgdesc=Placeholder
+arch=('any')
+license=('MIT')
+source=()
+md5sums=()
+
+package() {
+    true
+}

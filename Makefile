@@ -1,6 +1,6 @@
-.PHONY: toolchain rust python cmake autotools golang fortran ruby perl nodejs runtime ada tools
+.PHONY: toolchain rust python cmake autotools golang fortran ruby perl nodejs runtime ada tools makepkg
 
-all: toolchain rust python cmake autotools golang fortran ruby perl nodejs runtime ada tools
+all: toolchain rust python cmake autotools golang fortran ruby perl nodejs runtime ada tools makepkg
 
 toolchain:
 	(cd toolchain && ./test.sh)
@@ -40,3 +40,6 @@ ada:
 
 tools:
 	(cd tools && ./test.sh)
+
+makepkg:
+	(cd makepkg && ./test.sh)
