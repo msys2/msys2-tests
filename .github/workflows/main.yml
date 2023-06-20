@@ -28,6 +28,7 @@ jobs:
       CC: ${{ matrix.cc }}
       CXX: ${{ matrix.cxx }}
       FC: ${{ matrix.fc }}
+      MSYS: "winjitdebug"
     steps:
       - uses: actions/checkout@v3
 
