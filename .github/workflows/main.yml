@@ -90,7 +90,72 @@ jobs:
           msys2 -c 'pacman --noconfirm -Suuy'
           msys2 -c 'pacman --noconfirm -Suu'
 
-      - name: Run Tests
+      - name: "test: toolchain"
         shell: msys2 {0}
         run: |
-          make -j
+          make -j toolchain
+
+      - name: "test: rust"
+        shell: msys2 {0}
+        run: |
+          make -j rust
+
+      - name: "test: python"
+        shell: msys2 {0}
+        run: |
+          make -j python
+
+      - name: "test: cmake"
+        shell: msys2 {0}
+        run: |
+          make -j cmake
+
+      - name: "test: autotools"
+        shell: msys2 {0}
+        run: |
+          make -j autotools
+
+      - name: "test: golang"
+        shell: msys2 {0}
+        run: |
+          make -j golang
+
+      - name: "test: fortran"
+        shell: msys2 {0}
+        run: |
+          make -j fortran
+
+      - name: "test: ruby"
+        shell: msys2 {0}
+        run: |
+          make -j ruby
+
+      - name: "test: perl"
+        shell: msys2 {0}
+        run: |
+          make -j perl
+
+      - name: "test: nodejs"
+        shell: msys2 {0}
+        run: |
+          make -j nodejs
+
+      - name: "test: runtime"
+        shell: msys2 {0}
+        run: |
+          make -j runtime
+
+      - name: "test: ada"
+        shell: msys2 {0}
+        run: |
+          make -j ada
+
+      - name: "test: tools"
+        shell: msys2 {0}
+        run: |
+          make -j tools
+
+      - name: "test: makepkg"
+        shell: msys2 {0}
+        run: |
+          make -j makepkg
