@@ -10,9 +10,9 @@ install-sh
 *.m4
 .deps
 .libs
-Makefile
+example/Makefile
 Makefile.in
 *.o
 *~
-_build
+_build*
 test-driver
