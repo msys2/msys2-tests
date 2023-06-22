@@ -3,7 +3,9 @@ test('snprintf_redef', executable('snprintf_redef', 'snprintf_redef.c'))
 test('quick_exit', executable('quick_exit', 'quick_exit.cpp'))
 test('exception_handling', executable('exception_handling', 'exception_handling.cpp'))
 test('printf_format', executable('printf_format', 'printf_format.c'))
-test('pch', executable('pch', 'pch.cpp', cpp_pch : 'pch/pch.hpp'))
+if not get_option('cross')
+    test('pch', executable('pch', 'pch.cpp', cpp_pch : 'pch/pch.hpp'))
+endif
 
 openmp = dependency('openmp')
 env = environment()
@@ -15,8 +17,9 @@ windres_res = import('windows').compile_resources('windres.rc')
 windres = executable('windres', 'windres.c', windres_res)
 test('windres', windres)
 
-test('call_once', executable('call_once', 'call_once.cpp'))
-
+if not get_option('cross')
+    test('call_once', executable('call_once', 'call_once.cpp'))
+endif
 test('undef_memrchr', executable('undef_memrchr', 'undef_memrchr.c', c_args: ['-O3']))
 
 test('stpcpy_fortify', executable('stpcpy_fortify', 'stpcpy_fortify.c', c_args: ['-O3', '-D_FORTIFY_SOURCE=2']))
@@ -52,4 +55,6 @@ if compiler.get_id() == 'clang' and compiler.get_linker_id() == 'ld.lld'
     test('guard_cf_nochecks-invalid_icall_nocf', guard_cf_nochecks, args : ['invalid_icall_nocf'])
 endif
 
-subdir('def-undec-stdcall')
+if not get_option('cross')
+    subdir('def-undec-stdcall')
+endif
