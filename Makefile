@@ -1,6 +1,6 @@
-.PHONY: toolchain rust python cmake autotools golang fortran ruby perl nodejs runtime ada tools makepkg clean
+.PHONY: toolchain rust python cmake autotools golang fortran ruby perl nodejs runtime ada tools makepkg libtool clean
 
-all: toolchain rust python cmake autotools golang fortran ruby perl nodejs runtime ada tools makepkg clean
+all: toolchain rust python cmake autotools golang fortran ruby perl nodejs runtime ada tools makepkg libtool clean
 
 toolchain:
 	(cd toolchain && ./test.sh)
@@ -43,6 +43,9 @@ tools:
 
 makepkg:
 	(cd makepkg && ./test.sh)
+
+libtool:
+	(cd libtool && ./test.sh)
 
 clean:
 	$(MAKE) -C autotools clean
