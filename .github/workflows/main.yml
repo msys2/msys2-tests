@@ -159,3 +159,8 @@ jobs:
         shell: msys2 {0}
         run: |
           make -j makepkg
+
+      - name: "test: libtool"
+        shell: msys2 {0}
+        run: |
+          make -j libtool
