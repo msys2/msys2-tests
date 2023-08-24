@@ -59,6 +59,7 @@ jobs:
             ${{ matrix.prefix }}-nodejs
             ${{ matrix.prefix }}-gdb
             make
+            git
 
       - uses: msys2/setup-msys2@v2
         if: ${{ matrix.msystem == 'MSYS' }}
@@ -79,6 +80,7 @@ jobs:
             perl
             mingw-w64-cross-gcc
             gdb
+            git
 
       - name: Add staging repo
         shell: msys2 {0}
