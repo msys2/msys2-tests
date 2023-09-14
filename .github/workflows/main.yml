@@ -72,7 +72,6 @@ jobs:
             cmake
             make
             gcc
-            gcc-fortran
             python
             python-setuptools
             autotools
