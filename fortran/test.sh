@@ -7,6 +7,11 @@ if [[ "$MSYSTEM" == "CLANG32" || "$MSYSTEM" == "MSYS" ]]; then
     exit 0;
 fi
 
+if [[ "$MSYSTEM" == "UCRT64" && "$CC" == "clang" ]]; then
+    echo "skipped on $MSYSTEM with clang"
+    exit 0;
+fi
+
 FC="${FC:-gfortran}"
 
 "$FC" hello.f90 -o hello.exe
