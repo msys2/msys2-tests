@@ -16,7 +16,7 @@ jobs:
           { msystem: MINGW64, prefix:  mingw-w64-x86_64, cc: gcc, cxx: g++, fc: gfortran },
           { msystem: MINGW32, prefix:  mingw-w64-i686, cc: gcc, cxx: g++, fc: gfortran },
           { msystem: UCRT64,  prefix:  mingw-w64-ucrt-x86_64, cc: gcc, cxx: g++, fc: gfortran },
-          { msystem: UCRT64,  prefix:  mingw-w64-ucrt-x86_64, cc: clang, cxx: clang++, fc: flang },
+          { msystem: UCRT64,  prefix:  mingw-w64-ucrt-x86_64, cc: clang, cxx: clang++, fc: '' },
           { msystem: CLANG32, prefix:  mingw-w64-clang-i686, cc: clang, cxx: clang++ },
           { msystem: CLANG64, prefix:  mingw-w64-clang-x86_64, cc: clang, cxx: clang++, fc: flang },
           { msystem: MSYS, cc: gcc, cxx: g++, fc: gfortran },
