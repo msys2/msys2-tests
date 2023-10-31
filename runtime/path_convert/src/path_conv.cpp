@@ -1,17 +1,195 @@
 /*
-SPDX-License-Identifier: CC0-1.0
+  The MSYS2 Path conversion source code is licensed under:
+  
+  CC0 1.0 Universal
+  
+  Official translations of this legal tool are available
+  
+  CREATIVE COMMONS CORPORATION IS NOT A LAW FIRM AND DOES NOT PROVIDE
+  LEGAL SERVICES. DISTRIBUTION OF THIS DOCUMENT DOES NOT CREATE AN
+  ATTORNEY-CLIENT RELATIONSHIP. CREATIVE COMMONS PROVIDES THIS
+  INFORMATION ON AN "AS-IS" BASIS. CREATIVE COMMONS MAKES NO WARRANTIES
+  REGARDING THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS
+  PROVIDED HEREUNDER, AND DISCLAIMS LIABILITY FOR DAMAGES RESULTING FROM
+  THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS PROVIDED
+  HEREUNDER.
+  
+  Statement of Purpose
+  
+  The laws of most jurisdictions throughout the world automatically
+  confer exclusive Copyright and Related Rights (defined below) upon the
+  creator and subsequent owner(s) (each and all, an "owner") of an
+  original work of authorship and/or a database (each, a "Work").
+  
+  Certain owners wish to permanently relinquish those rights to a Work
+  for the purpose of contributing to a commons of creative, cultural and
+  scientific works ("Commons") that the public can reliably and without
+  fear of later claims of infringement build upon, modify, incorporate
+  in other works, reuse and redistribute as freely as possible in any
+  form whatsoever and for any purposes, including without limitation
+  commercial purposes. These owners may contribute to the Commons to
+  promote the ideal of a free culture and the further production of
+  creative, cultural and scientific works, or to gain reputation or
+  greater distribution for their Work in part through the use and
+  efforts of others.
+  
+  For these and/or other purposes and motivations, and without any
+  expectation of additional consideration or compensation, the person
+  associating CC0 with a Work (the "Affirmer"), to the extent that he or
+  she is an owner of Copyright and Related Rights in the Work,
+  voluntarily elects to apply CC0 to the Work and publicly distribute
+  the Work under its terms, with knowledge of his or her Copyright and
+  Related Rights in the Work and the meaning and intended legal effect
+  of CC0 on those rights.
+  
+  1. Copyright and Related Rights. A Work made available under CC0 may
+  be protected by copyright and related or neighboring rights
+  ("Copyright and Related Rights"). Copyright and Related Rights
+  include, but are not limited to, the following:
+  
+  the right to reproduce, adapt, distribute, perform, display,
+  communicate, and translate a Work;
+  moral rights retained by the original author(s) and/or performer(s);
+  publicity and privacy rights pertaining to a person's image or
+  likeness depicted in a Work;
+  rights protecting against unfair competition in regards to a Work,
+  subject to the limitations in paragraph 4(a), below;
+  rights protecting the extraction, dissemination, use and reuse of data
+  in a Work;
+  database rights (such as those arising under Directive 96/9/EC of the
+  European Parliament and of the Council of 11 March 1996 on the legal
+  protection of databases, and under any national implementation
+  thereof, including any amended or successor version of such
+  directive); and
+  other similar, equivalent or corresponding rights throughout the world
+  based on applicable law or treaty, and any national implementations
+  thereof.
+  
+  2. Waiver. To the greatest extent permitted by, but not in
+  contravention of, applicable law, Affirmer hereby overtly, fully,
+  permanently, irrevocably and unconditionally waives, abandons, and
+  surrenders all of Affirmer's Copyright and Related Rights and
+  associated claims and causes of action, whether now known or unknown
+  (including existing as well as future claims and causes of action), in
+  the Work (i) in all territories worldwide, (ii) for the maximum
+  duration provided by applicable law or treaty (including future time
+  extensions), (iii) in any current or future medium and for any number
+  of copies, and (iv) for any purpose whatsoever, including without
+  limitation commercial, advertising or promotional purposes (the
+  "Waiver"). Affirmer makes the Waiver for the benefit of each member of
+  the public at large and to the detriment of Affirmer's heirs and
+  successors, fully intending that such Waiver shall not be subject to
+  revocation, rescission, cancellation, termination, or any other legal
+  or equitable action to disrupt the quiet enjoyment of the Work by the
+  public as contemplated by Affirmer's express Statement of Purpose.
+  
+  3. Public License Fallback. Should any part of the Waiver for any
+  reason be judged legally invalid or ineffective under applicable law,
+  then the Waiver shall be preserved to the maximum extent permitted
+  taking into account Affirmer's express Statement of Purpose. In
+  addition, to the extent the Waiver is so judged Affirmer hereby grants
+  to each affected person a royalty-free, non transferable, non
+  sublicensable, non exclusive, irrevocable and unconditional license to
+  exercise Affirmer's Copyright and Related Rights in the Work (i) in
+  all territories worldwide, (ii) for the maximum duration provided by
+  applicable law or treaty (including future time extensions), (iii) in
+  any current or future medium and for any number of copies, and (iv)
+  for any purpose whatsoever, including without limitation commercial,
+  advertising or promotional purposes (the "License"). The License shall
+  be deemed effective as of the date CC0 was applied by Affirmer to the
+  Work. Should any part of the License for any reason be judged legally
+  invalid or ineffective under applicable law, such partial invalidity
+  or ineffectiveness shall not invalidate the remainder of the License,
+  and in such case Affirmer hereby affirms that he or she will not (i)
+  exercise any of his or her remaining Copyright and Related Rights in
+  the Work or (ii) assert any associated claims and causes of action
+  with respect to the Work, in either case contrary to Affirmer's
+  express Statement of Purpose.
+  
+  4. Limitations and Disclaimers.
+  
+  No trademark or patent rights held by Affirmer are waived, abandoned,
+  surrendered, licensed or otherwise affected by this document.
+  Affirmer offers the Work as-is and makes no representations or
+  warranties of any kind concerning the Work, express, implied,
+  statutory or otherwise, including without limitation warranties of
+  title, merchantability, fitness for a particular purpose, non
+  infringement, or the absence of latent or other defects, accuracy, or
+  the present or absence of errors, whether or not discoverable, all to
+  the greatest extent permissible under applicable law.
+  Affirmer disclaims responsibility for clearing rights of other persons
+  that may apply to the Work or any use thereof, including without
+  limitation any person's Copyright and Related Rights in the Work.
+  Further, Affirmer disclaims responsibility for obtaining any necessary
+  consents, permissions or other rights required for any use of the
+  Work.
+  Affirmer understands and acknowledges that Creative Commons is not a
+  party to this document and has no duty or obligation with respect to
+  this CC0 or use of the Work.
+
+  Contributions thanks to:
+    niXman <i.nixman@autistici.org>
+    Ely Arzhannikov <iarzhannikov@gmail.com>
+    Alexey Pavlov <alexpux@gmail.com>
+    Ray Donnelly <mingw.android@gmail.com>
+    Johannes Schindelin <johannes.schindelin@gmx.de>
+  
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <vector>
 
 #include <sys/cygwin.h>
 #include "path_conv.h"
 
 #define debug_printf(...) fprintf (stderr, __VA_ARGS__)
 #define system_printf(...) fprintf (stderr, __VA_ARGS__)
+
+#ifndef NT_MAX_PATH
+#define NT_MAX_PATH 8192
+#endif
+
+namespace {
+
+class tmp_pathbuf {
+    std::vector<char*> paths;
+public:
+    ~tmp_pathbuf() {
+        std::vector<char*>::iterator last = paths.end();
+        for(std::vector<char*>::iterator it = paths.begin(); it != last; ++it)
+            free(*it);
+    }
+    char *c_get () {
+        paths.push_back((char *) malloc(NT_MAX_PATH));
+        return paths.back();
+    }
+};
+
+class path_conv {
+    char path[PATH_MAX+1];
+public:
+    int error = 0;
+    path_conv (const char *src, uint32_t)
+    {
+        error = (int) cygwin_conv_path(CCP_POSIX_TO_WIN_A|CCP_RELATIVE, src, path, PATH_MAX+1);
+        debug_printf("called cygwin_conv_path(CCP_POSIX_TO_WIN_A,%s -> %s, in-size %d, result = %d\n", src, path, PATH_MAX+1, error);
+    }
+    const char *get_win32 () const {
+        return path;
+    }
+};
+
+int set_errno(int val) {
+    debug_printf("called set_errno(%d)", val);
+    return 0;
+}
+
+#define PC_NOFULL 0
+
+}
 
 typedef enum PATH_TYPE_E {
     NONE = 0,
@@ -91,7 +269,7 @@ void find_end_of_rooted_path(const char** from, const char** to, int* in_string)
 void sub_convert(const char** from, const char** to, char** dst, const char* dstend, int* in_string) {
     const char* copy_from = *from;
     path_type type = find_path_start_and_type(from, false, *to);
-    debug_printf("found type %d for path %s", type, copy_from);
+    debug_printf("found type %d for path %s\n", type, copy_from);
 
     if (type == POSIX_PATH_LIST) {
         find_end_of_posix_list(to, in_string);
@@ -467,19 +645,23 @@ int is_special_posix_path(const char* from, const char* to, char** dst, const ch
 
 void posix_to_win32_path(const char* from, const char* to, char** dst, const char* dstend) {
     if ( from != to ) {
-        char *one_path = (char*)alloca(to-from+1);
+        tmp_pathbuf tp;
+        char *one_path = tp.c_get();
         strncpy(one_path, from, to-from);
         one_path[to-from] = '\0';
-        char win32_path1[PATH_MAX + 1];
-        ssize_t result = cygwin_conv_path(CCP_POSIX_TO_WIN_A|CCP_RELATIVE, one_path, win32_path1, PATH_MAX+1);
-        printf("called cygwin_conv_path(CCP_POSIX_TO_WIN_A,%s -> %s, in-size %d, result = %zd\n", one_path, win32_path1, PATH_MAX+1, result);
-        if( result !=0 ) {
-            copy_to_dst(one_path, NULL, dst, dstend);
+
+        path_conv conv (one_path, PC_NOFULL);
+        if (conv.error)
+        {
+          set_errno(conv.error);
+          copy_to_dst(one_path, NULL, dst, dstend);
         } else {
-            char *win32_path=win32_path1;
-            for (; (*win32_path != '\0') && (*dst != dstend); ++win32_path, ++(*dst)) {
-                **dst = (*win32_path == '\\') ? '/' : *win32_path;
-            }
+          char* win32_path = tp.c_get();
+          stpcpy (win32_path, conv.get_win32 ());
+          for (; (*win32_path != '\0') && (*dst != dstend); ++win32_path, ++(*dst)) {
+             **dst = (*win32_path == '\\') ? '/' : *win32_path;
+          }
         }
     }
 }
+
