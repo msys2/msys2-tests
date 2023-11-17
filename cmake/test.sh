@@ -23,7 +23,7 @@ do
 
     if [[ "$MSYSTEM" == "MSYS" ]]
     then
-        for target in 'x86_64-w64-mingw32' 'i686-w64-mingw32'
+        for target in 'x86_64-w64-mingw32ucrt' 'x86_64-w64-mingw32' 'i686-w64-mingw32'
         do
             rm -Rf "_build_${target}"
             mkdir "_build_${target}"
