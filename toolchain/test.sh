@@ -20,6 +20,12 @@ if [[ "$MSYSTEM" == "MSYS" ]]; then
     meson compile -C _build_cross_64
     meson test -C _build_cross_64
     cd ..
+
+    cd meson
+    meson setup --cross-file x86_64-w64-mingw32ucrt.txt _build_cross_64_ucrt --werror
+    meson compile -C _build_cross_64_ucrt
+    meson test -C _build_cross_64_ucrt
+    cd ..
 fi
 
 cd custom
