@@ -57,6 +57,7 @@ jobs:
             ${{ matrix.prefix }}-perl
             ${{ matrix.prefix }}-nodejs
             ${{ matrix.prefix }}-gdb
+            ${{ matrix.prefix }}-gettext
             make
             git
 
@@ -79,6 +80,7 @@ jobs:
             mingw-w64-cross-gcc
             gdb
             git
+            gettext-devel
 
       - name: Add staging repo
         shell: msys2 {0}
@@ -164,3 +166,8 @@ jobs:
         shell: msys2 {0}
         run: |
           make -j libtool
+
+      - name: "test: gettext"
+        shell: msys2 {0}
+        run: |
+          make -j gettext
