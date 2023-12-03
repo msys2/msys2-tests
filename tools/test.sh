@@ -7,3 +7,7 @@ set -e
 "$MSYSTEM_PREFIX/bin/gdb" -ex=bt -ex=q
 
 ./git.sh
+
+if [[ "$MSYSTEM" == "MSYS" ]]; then
+    ./gnupg.sh
+fi
