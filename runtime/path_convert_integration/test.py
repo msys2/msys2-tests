@@ -3,9 +3,23 @@ import os
 import sys
 import unittest
 from typing import Tuple, List, Dict
+from contextlib import contextmanager
 
 
 DIR = os.path.dirname(os.path.realpath(__file__))
+
+
+@contextmanager
+def set_env(name, value):
+    old_value = os.environ.get(name)
+    try:
+        os.environ[name] = value
+        yield
+    finally:
+        if old_value is None:
+            del os.environ[name]
+        else:
+            os.environ[name] = old_value
 
 
 def parse_echo(args: List[str]=[], env: Dict[str, str]=os.environ) -> Tuple[List[str], Dict[str, str]]:
@@ -48,6 +62,12 @@ class Tests(unittest.TestCase):
         wroot = cygpath('-w', '/')
         parsed = parse_echo(['/foo bar:/baz quux'], {})[0][0]
         self.assertEqual(parsed, wroot + "foo bar;" + wroot + "baz quux")
+
+    def test_disable_everything(self):
+        with set_env('MSYS_NO_PATHCONV', '1'):
+            args, envs = parse_echo(['/usr', 'adad'], {'FOO': '/bla'})
+        self.assertEqual(args, ['/usr', 'adad'])
+        self.assertEqual(envs['FOO'], '/bla')
 
 
 def suite():
