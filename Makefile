@@ -1,6 +1,6 @@
-.PHONY: toolchain rust python cmake autotools golang fortran ruby perl nodejs runtime ada tools makepkg libtool gettext clean
+.PHONY: toolchain rust python cmake autotools golang fortran ruby perl nodejs runtime ada tools makepkg libtool gettext keyring clean
 
-all: toolchain rust python cmake autotools golang fortran ruby perl nodejs runtime ada tools makepkg libtool gettext clean
+all: toolchain rust python cmake autotools golang fortran ruby perl nodejs runtime ada tools makepkg libtool gettext keyring clean
 
 toolchain:
 	(cd toolchain && ./test.sh)
@@ -49,6 +49,9 @@ libtool:
 
 gettext:
 	(cd gettext && ./test.sh)
+
+keyring:
+	(cd keyring && ./test.sh)
 
 clean:
 	$(MAKE) -C autotools clean

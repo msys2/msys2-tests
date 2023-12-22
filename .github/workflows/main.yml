@@ -171,3 +171,8 @@ jobs:
         shell: msys2 {0}
         run: |
           make -j gettext
+
+      - name: "test: keyring"
+        shell: msys2 {0}
+        run: |
+          make -j keyring
