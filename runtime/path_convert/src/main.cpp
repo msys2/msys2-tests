@@ -196,7 +196,44 @@ static const test_data datas[] = {
     ,{"/foo bar", MSYSROOT2 "/foo bar", false}
     ,{"/foo bar:/baz quux", MSYSROOT "\\foo bar;" MSYSROOT "\\baz quux", false}
     ,{"/trash directory.t0123-blub:/", MSYSROOT "\\trash directory.t0123-blub;" MSYSROOT "\\", false}
-    ,{0, 0, false}
+    ,
+    // https://github.com/msys2/msys2-runtime/commit/7f5ce2cb55bf18020a68f88c2861ea862feb8178
+    {"~/foo", "~/foo", false},
+    {"~/.gitconfig", "~/.gitconfig", false},
+    // https://github.com/msys2/msys2-runtime/commit/4b20e4fc67735ce82bb47c60a6e8f46bbcb33127
+    {":name", ":name", false},
+    {":/message", ":/message", false},
+    // https://github.com/msys2/msys2-runtime/commit/cfc7696e0825563fb4245377ab70887cde160cd1
+    {"`/foo", "`/foo", false},
+    {"'/foo", "'/foo", false},
+    {"\"/foo", "\"/foo", false},
+    {"*/foo", "*/foo", false},
+    {"?/foo", "?/foo", false},
+    {"[/foo", "[/foo", false},
+    {"]/foo", "]/foo", false},
+    // https://github.com/msys2/msys2-runtime/commit/6ed5a4279665baad20f30017adb38c6fcec3c2d3
+    {"host:/~repo", "host:/~repo", false},
+    {"host:/~re:po", "host:/~re:po", false},
+    {"host:/~re/po", "host:/~re/po", false},
+    {"host:/~repo", "host:/~repo", false},
+    // https://github.com/msys2/msys2-runtime/commit/c94cf814671d0c2891d9f82495c42608b39ef5bd
+    {"helper:://hostname/subrepo", "helper:://hostname/subrepo", false},
+    {"helper:://subrepo", "helper:://subrepo", false},
+    {"helper::/subrepo", "helper::/subrepo", false},
+    // https://github.com/msys2/msys2-runtime/commit/9944652c41fb96f555d221865f4ed5d0c8b33514
+    {"HEAD:./path", "HEAD:./path", false},
+    {"HEAD:../path", "HEAD:../path", false},
+    // https://github.com/msys2/msys2-runtime/commit/dba012d3e739305f4c08068a330cfe5db885dad6
+    {"@@/at-test", "@@/at-test", false},
+    // https://github.com/msys2/msys2-runtime/commit/e9a55f1ac61a079533fa01a3dad2b65e721d13f3
+    {"me@example.com:/tmp/", "me@example.com:/tmp/", false},
+    {"host:/", "host:/", false},
+    {"user@host:/", "user@host:/", false},
+    {".:/tmp/", ".;" MSYSROOT "\\tmp\\", false},
+    {"..:/tmp/", "..;" MSYSROOT "\\tmp\\", false},
+    {".:..:/tmp/", ".;..;" MSYSROOT "\\tmp\\", false},
+    {"/:/tmp/", MSYSROOT "\\;" MSYSROOT "\\tmp\\", false},
+    {0, 0, false}
 };
 
 /***************************************************************************/
