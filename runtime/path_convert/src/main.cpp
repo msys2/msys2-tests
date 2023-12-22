@@ -36,11 +36,11 @@ typedef struct test_data_t {
 static const test_data datas[] = {
     {"/usr/lib:/var:", MSYSROOT "\\usr\\lib;" MSYSROOT "\\var;", false}
     ,{"-LIBPATH:../lib", "-LIBPATH:../lib", false}
-    ,{"-LIBPATH:../lib:/var", "-LIBPATH:..\\lib;" MSYSROOT "\\var", false}
+    ,{"-LIBPATH:../lib:/var", "-LIBPATH:../lib:/var", false}
     ,{"//Collection:http://tfsserver", "//Collection:http://tfsserver", false}
     ,{"/Collection:http://tfsserver", "/Collection:http://tfsserver", false}
-    ,{"-L'/foo bar/boo' PREFIX='/foo bar/boo'", "-L'" MSYSROOT2 "/foo bar/boo' PREFIX='/foo bar/boo'", false}
-    ,{"-L'/foo /bar/boo' PREFIX='/foo /bar/boo'", "-L'" MSYSROOT2 "/foo /bar/boo' PREFIX='/foo /bar/boo'", false}
+    ,{"-L'/foo bar/boo' PREFIX='/foo bar/boo'", "-L'/foo bar/boo' PREFIX='/foo bar/boo'", false}
+    ,{"-L'/foo /bar/boo' PREFIX='/foo /bar/boo'", "-L'/foo /bar/boo' PREFIX='/foo /bar/boo'", false}
     ,{"C:\\foo\\bar", "C:\\foo\\bar", false} // 0
     ,{"/foo/bar;", "/foo/bar;", false} // 1
     ,{"//foobar", "/foobar", false} // 2
@@ -52,25 +52,28 @@ static const test_data datas[] = {
     ,{"-I/foo,/bar", "-I/foo," MSYSROOT2 "/bar", false} // 8
     ,{"-I/foo", "-I" MSYSROOT2 "/foo", false} // 9
     ,{"-L/foo", "-L" MSYSROOT2 "/foo", false} // 9
-    ,{"-L'/foo /bar'", "-L'" MSYSROOT2 "/foo /bar'", false} // 9
-    ,{"-L'/foo bar'", "-L'" MSYSROOT2 "/foo bar'", false} // 9
-    ,{"'/opt /bin'", "'" MSYSROOT2 "/opt /bin'", false}
-    ,{"'/opt files/bin'", "'" MSYSROOT2 "/opt files/bin'", false}
+    ,{"-L'/foo /bar'", "-L'/foo /bar'", false} // 9
+    ,{"-L/foo /bar", "-L" MSYSROOT2 "/foo /bar", false} // 9
+    ,{"-L/foo bar", "-L" MSYSROOT2 "/foo bar", false} // 9
+    ,{"-L'/foo bar'", "-L'/foo bar'", false} // 9
+    ,{"'/opt /bin'", "'/opt /bin'", false}
+    ,{"'/opt files/bin'", "'/opt files/bin'", false}
     ,{"/", "" MSYSROOT2 "/", false} // 10
     ,{"/..", "/..", false} // 11
     ,{"x:x:/x", "x:x:/x", false} // 12
-    ,{"x::x:/xx", "x;x;" MSYSROOT "\\xx", false} // 13
-    ,{"x::x/z:x", "x;x\\z;x", false} // 14
-    ,{"x::/x z:x", "x;" MSYSROOT "\\x z;x", false} // 14
-    ,{"'x::/x z:x'", "'x;" MSYSROOT "\\x z;x'", false} // 14
+    ,{"x::x:/xx", "x::x:/xx", false} // 13
+    ,{"x::x/z:x", "x::x/z:x", false} // 14
+    ,{"x::/x z:x", "x::/x z:x", false} // 14
+    ,{"'x::/x z:x'", "'x::/x z:x'", false} // 14
     ,{"/dev/null", "nul", false} // 14
-    ,{"'/dev/null'", "'nul'", false} // 14
     ,{"/var:/var", MSYSROOT "\\var;" MSYSROOT "\\var", false} // 14
-    ,{"'/var:/var'", "'" MSYSROOT "\\var;" MSYSROOT "\\var'", false} // 14
-    ,{"-L'/var:/var'", "-L'" MSYSROOT "\\var;" MSYSROOT "\\var'", false} // 14
+    ,{"'/var:/var'", "'/var:/var'", false} // 14
+    ,{"-L'/var:/var'", "-L'/var:/var'", false} // 14
     ,{"-L/var:/var", "-L" MSYSROOT "\\var;" MSYSROOT "\\var", false} // 14
-    ,{"'/bin:/Program Files:/lib'", "'" MSYSROOT "\\usr\\bin;" MSYSROOT "\\Program Files;" MSYSROOT "\\lib'", false}
-    ,{"'-L/opt /bin'", "'-L" MSYSROOT2 "/opt /bin'", false}
+    ,{"'/bin:/Program Files:/lib'", "'/bin:/Program Files:/lib'", false}
+    ,{"/bin:/Program Files:/lib", "" MSYSROOT "\\usr\\bin;" MSYSROOT "\\Program Files;" MSYSROOT "\\lib", false}
+    ,{"-L/opt /bin", "-L" MSYSROOT2 "/opt /bin", false}
+    ,{"'-L/opt /bin'", "'-L/opt /bin'", false}
     ,{"-w -- INSTALL_ROOT=C:/Test/ports64", "-w -- INSTALL_ROOT=C:/Test/ports64", false} // 15
     ,{"-w -- INSTALL_ROOT=C:\\Test\\ports64", "-w -- INSTALL_ROOT=C:\\Test\\ports64", false} // 16
     ,{"-IC:/Test/ports64", "-IC:/Test/ports64", false} // 17
@@ -78,25 +81,27 @@ static const test_data datas[] = {
     //,{"-g -O2 -I/foo -L'/foo bar/boo' PREFIX='/foo bar/boo'", "-g -O2 -I" MSYSROOT2 "/foo -L'" MSYSROOT2 "/foo bar/boo' PREFIX='" MSYSROOT2 "/foo bar/boo'", false}
     ,{"'C:\\foo\\bar'", "'C:\\foo\\bar'", false} // 0
     ,{"'/foo/bar;'", "'/foo/bar;'", false} // 1
-    ,{"'//foobar'", "'/foobar'", false} // 2
-    ,{"'//foo\\bar'", "'/foo/bar'", false} // 3
+    ,{"'//foobar'", "'//foobar'", false} // 2
+    ,{"'//foo\\bar'", "'//foo\\bar'", false} // 3
     ,{"'//foo/bar'", "'//foo/bar'", false} // 4
-    ,{"'/c:\\foo\\bar'", "'c:/foo/bar'", false} // 5
-    ,{"'foo=/bar'", "'foo=" MSYSROOT2 "/bar'", false} // 6
-    ,{"'-foo,/bar'", "'-foo," MSYSROOT2 "/bar'", false} // 7
-    ,{"'-I/foo,/bar'", "'-I/foo," MSYSROOT2 "/bar'", false} // 8
-    ,{"'-I/foo'", "'-I" MSYSROOT2 "/foo'", false} // 9
-    ,{"'/'", "'" MSYSROOT2 "/'", false} // 10
+    ,{"'/c:\\foo\\bar'", "'/c:\\foo\\bar'", false} // 5
+    ,{"foo=/bar", "foo=" MSYSROOT2 "/bar", false} // 6
+    ,{"'foo=/bar'", "'foo=/bar'", false} // 6
+    ,{"-foo,/bar", "-foo," MSYSROOT2 "/bar", false} // 7
+    ,{"'-foo,/bar'", "'-foo,/bar'", false} // 7
+    ,{"'-I/foo,/bar'", "'-I/foo,/bar'", false} // 8
+    ,{"'-I/foo'", "'-I/foo'", false} // 9
+    ,{"'/'", "'/'", false} // 10
     ,{"'/..'", "'/..'", false} // 11
     ,{"'x:x:/x'", "'x:x:/x'", false} // 12
-    ,{"'x::x:/x'", "'x;x;X:\\'", false} // 13
+    ,{"'x::x:/x'", "'x::x:/x'", false} // 13
     ,{"'-w -- INSTALL_ROOT=C:/Test/ports64'", "'-w -- INSTALL_ROOT=C:/Test/ports64'", false} // 15
     ,{"'-w -- INSTALL_ROOT=C:\\Test\\ports64'", "'-w -- INSTALL_ROOT=C:\\Test\\ports64'", false} // 16
     ,{"'-IC:/Test/ports64'", "'-IC:/Test/ports64'", false} // 17
     ,{"http://google.ru", "http://google.ru", false}
     ,{"'http://google.ru'", "'http://google.ru'", false}
     ,{"'-I/foo,http://google.ru'", "'-I/foo,http://google.ru'", false} // 8
-    ,{"'x::http://google.ru:x'", "'x;http://google.ru;x'", false} // 8
+    ,{"'x::http://google.ru:x'", "'x::http://google.ru:x'", false} // 8
     ,{"", "", false}
     ,{"''", "''", false}
     ,{"/usr/local/info:/usr/share/info:/usr/info:", MSYSROOT "\\usr\\local\\info;" MSYSROOT "\\usr\\share\\info;" MSYSROOT "\\usr\\info;", false}
@@ -170,18 +175,17 @@ static const test_data datas[] = {
     ,{"foo:echo /bar/baz", "foo:echo /bar/baz", false}
     ,{"@/foo/bar", "@" MSYSROOT2 "/foo/bar", false}
     ,{"@/foo/bar@", "@" MSYSROOT2 "/foo/bar@", false}
-    ,{"'@/foo/bar'", "'@" MSYSROOT2 "/foo/bar'", false}
+    ,{"'@/foo/bar'", "'@/foo/bar'", false}
     ,{"///foo/bar", "//foo/bar", false}
-    ,{".:./", ".;.\\", false}
-    ,{"..:./", "..;.\\", false}
-    ,{"../:./", "..\\;.\\", false}
-    ,{"../:./", "..\\;.\\", false}
-    ,{"../aa/:./", "..\\aa\\;.\\", false}
+    ,{".:./", ".:./", false}
+    ,{"..:./", "..:./", false}
+    ,{"../:./", "../:./", false}
+    ,{"../aa/:./", "../aa/:./", false}
     ,{"../", "../", false}
     ,{"/foo/bar/", "" MSYSROOT2 "/foo/bar/", false}
     ,{"-MExtUtils::ParseXS=process_file", "-MExtUtils::ParseXS=process_file", false}
     ,{"/foo/bin/../libs", "" MSYSROOT2 "/foo/bin/../libs", false}
-    ,{"'/foo/bin/../libs'", "'" MSYSROOT2 "/foo/bin/../libs'", false}
+    ,{"'/foo/bin/../libs'", "'/foo/bin/../libs'", false}
     ,{"ExtUtils::ParseXS::process_file(filename => \"$<\", output => \"$@\", typemap => \"$(PURPLE_PERL_TOP)/common/typemap\");",
         "ExtUtils::ParseXS::process_file(filename => \"$<\", output => \"$@\", typemap => \"$(PURPLE_PERL_TOP)/common/typemap\");", false
     }
