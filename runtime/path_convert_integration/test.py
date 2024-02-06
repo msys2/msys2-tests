@@ -69,6 +69,12 @@ class Tests(unittest.TestCase):
         self.assertEqual(args, ['/usr', 'adad'])
         self.assertEqual(envs['FOO'], '/bla')
 
+    def test_pass_string_to_preprocessor(self):
+        # https://github.com/msys2/msys2-runtime/issues/190
+        parsed = parse_echo(['-DPREFIX="/ucrt64"'], {})[0][0]
+        mroot = cygpath('-m', '/')
+        self.assertEqual(parsed, f'-DPREFIX="{mroot}ucrt64"')
+
 
 def suite():
     return unittest.TestLoader().loadTestsFromName(__name__)
