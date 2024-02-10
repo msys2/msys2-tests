@@ -199,8 +199,9 @@ static const test_data datas[] = {
     // some spaces in unix paths: https://github.com/git-for-windows/msys2-runtime/commit/0b2d287629
     ,{"/foo bar", MSYSROOT2 "/foo bar", false}
     ,{"/foo bar:/baz quux", MSYSROOT "\\foo bar;" MSYSROOT "\\baz quux", false}
-    ,{"/trash directory.t0123-blub:/", MSYSROOT "\\trash directory.t0123-blub;" MSYSROOT "\\", false}
-    ,
+    ,{"/trash directory.t0123-blub:/", MSYSROOT "\\trash directory.t0123-blub;" MSYSROOT "\\", false},
+    // https://github.com/msys2/msys2-runtime/issues/190
+    {"\"/foo\"", "\"" MSYSROOT2 "/foo\"", false},
     // https://github.com/msys2/msys2-runtime/commit/7f5ce2cb55bf18020a68f88c2861ea862feb8178
     {"~/foo", "~/foo", false},
     {"~/.gitconfig", "~/.gitconfig", false},
@@ -210,7 +211,6 @@ static const test_data datas[] = {
     // https://github.com/msys2/msys2-runtime/commit/cfc7696e0825563fb4245377ab70887cde160cd1
     {"`/foo", "`/foo", false},
     {"'/foo", "'/foo", false},
-    {"\"/foo", "\"/foo", false},
     {"*/foo", "*/foo", false},
     {"?/foo", "?/foo", false},
     {"[/foo", "[/foo", false},
