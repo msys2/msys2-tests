@@ -54,7 +54,7 @@ jobs:
             ${{ matrix.prefix }}-autotools
             ${{ matrix.prefix }}-go
             ${{ matrix.prefix }}-ruby
-            ${{ matrix.prefix }}-perl
+            ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'i686') && 'perl' || 'ninja'}}
             ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'i686') && 'nodejs' || 'ninja'}}
             ${{ matrix.prefix }}-gdb
             ${{ matrix.prefix }}-gettext
