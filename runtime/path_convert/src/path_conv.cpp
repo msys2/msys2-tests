@@ -551,7 +551,7 @@ skip_p2w:
                         goto skip_p2w;
                     return POSIX_PATH_LIST;
                 }
-            } else if (memchr(it2, '=', end - it) == NULL) {
+            } else if (memchr(it2, '=', end - it2) == NULL) {
                 return SIMPLE_WINDOWS_PATH;
             }
         } else if (ch != '.') {
