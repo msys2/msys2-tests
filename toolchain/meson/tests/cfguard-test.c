@@ -82,6 +82,8 @@ int check_cfguard_status(void) {
     return policy.EnableControlFlowGuard;
 }
 
+void *nop_sled_target_ptr = (void *)nop_sled_target;
+
 int main(int argc, char *argv[]) {
     if (argc == 2) {
         if (strcmp(argv[1], "check_enabled") == 0) {
@@ -99,7 +101,7 @@ int main(int argc, char *argv[]) {
             return 0;
         }
         if (strcmp(argv[1], "invalid_icall") == 0) {
-            void *target = (void *)nop_sled_target;
+            void *target = nop_sled_target_ptr;
             target = (void *)(((intptr_t)target) + 16);
             puts("Performing invalid indirect call. If CFG is enabled this "
                  "should crash with exit code 0xc0000409 (-1073740791)...");
@@ -109,7 +111,7 @@ int main(int argc, char *argv[]) {
             return 1;
         }
         if (strcmp(argv[1], "invalid_icall_nocf") == 0) {
-            void *target = (void *)nop_sled_target;
+            void *target = nop_sled_target_ptr;
             target = (void *)(((intptr_t)target) + 16);
             puts("Performing invalid indirect call without CFG. You should "
                  "get an exit code 0...");
