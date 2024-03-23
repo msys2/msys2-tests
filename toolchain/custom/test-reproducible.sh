@@ -21,9 +21,6 @@ check_libraries_reproducible() {
 if [[ "$MSYSTEM" == "MSYS" ]]; then
     echo "skipped on $MSYSTEM"
     exit 0;
-elif [[ "$MSYSTEM" == "CLANG32" || "$MSYSTEM" == "CLANG64" ]]; then
-    echo "FIXME: skipped on $MSYSTEM"
-    exit 0;
 fi
 
 check_libraries_reproducible
