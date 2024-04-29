@@ -21,7 +21,7 @@ typedef struct test_data_t {
 #error "Need to define both MSYSROOT and MSYSROOT2, or neither"
 #endif
 #else
-#ifdef MSYSROOT
+#ifdef MSYSROOT2
 #error "Need to define both MSYSROOT and MSYSROOT2, or neither"
 #endif
 #if defined(__MSYS__) && defined(__LP64__)
