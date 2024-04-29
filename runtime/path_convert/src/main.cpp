@@ -287,6 +287,7 @@ int main() {
     int passed = 0;
     int total = 0;
     for ( const test_data *it = &datas[0]; it && it->src; ++it ) {
+        printf("---\n");
         total += 1;
         const char *path = it->src;
         const size_t blen = strlen(it->dst)*2 + 10;
