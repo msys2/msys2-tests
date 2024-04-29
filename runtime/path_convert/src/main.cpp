@@ -177,10 +177,11 @@ static const test_data datas[] = {
     ,{"@/foo/bar@", "@" MSYSROOT2 "/foo/bar@", false}
     ,{"'@/foo/bar'", "'@/foo/bar'", false}
     ,{"///foo/bar", "//foo/bar", false}
-    ,{".:./", ".:./", false}
-    ,{"..:./", "..:./", false}
-    ,{"../:./", "../:./", false}
-    ,{"../aa/:./", "../aa/:./", false}
+    ,{".:./", ".;.\\", false}
+    ,{"..:./", "..;.\\", false}
+    ,{"../:./", "..\\;.\\", false}
+    ,{"../:./", "..\\;.\\", false}
+    ,{"../aa/:./", "..\\aa\\;.\\", false}
     ,{"../", "../", false}
     ,{"/foo/bar/", "" MSYSROOT2 "/foo/bar/", false}
     ,{"-MExtUtils::ParseXS=process_file", "-MExtUtils::ParseXS=process_file", false}
@@ -236,6 +237,12 @@ static const test_data datas[] = {
     {".:/tmp/", ".;" MSYSROOT "\\tmp\\", false},
     {"..:/tmp/", "..;" MSYSROOT "\\tmp\\", false},
     {".:..:/tmp/", ".;..;" MSYSROOT "\\tmp\\", false},
+    {"/this:./there", MSYSROOT "\\this;.\\there", false},
+    {"..:.:./this:/there", "..;.;.\\this;" MSYSROOT "\\there", false},
+    {"--dir=/this:./there", "--dir=" MSYSROOT "\\this;.\\there", false},
+    {"--dir=./this:./there", "--dir=.\\this;.\\there", false},
+    {"WEBINPUTS=.:../../../texk/web2c", "WEBINPUTS=.;..\\..\\..\\texk\\web2c", false},
+    {".:../../../texk/web2c", ".;..\\..\\..\\texk\\web2c", false},
     {"/:/tmp/", MSYSROOT "\\;" MSYSROOT "\\tmp\\", false},
     {0, 0, false}
 };
