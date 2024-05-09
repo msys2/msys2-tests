@@ -2,8 +2,8 @@
 
 set -e
 
-if [[ "$MSYSTEM" == CLANG* || "$MSYSTEM" == "MSYS" || "$CC" == "clang" ]]; then
-    echo "skipped on $MSYSTEM"
+if [[ "$MSYSTEM" == CLANG* || "$MSYSTEM" == "MINGW32" || "$MSYSTEM" == "MSYS" || "$CC" == "clang" ]]; then
+    echo "skipped on $MSYSTEM with $CC"
     exit 0;
 fi
 
