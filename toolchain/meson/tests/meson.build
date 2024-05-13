@@ -54,3 +54,4 @@ if compiler.get_id() == 'clang' and compiler.get_linker_id() == 'ld.lld'
 endif
 
 subdir('def-undec-stdcall')
+subdir('ices')
