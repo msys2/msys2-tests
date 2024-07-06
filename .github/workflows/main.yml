@@ -51,6 +51,7 @@ jobs:
             ${{ matrix.prefix }}-rust
             ${{ matrix.prefix }}-python
             ${{ matrix.prefix }}-python-setuptools
+            ${{ matrix.prefix }}-cython
             ${{ matrix.prefix }}-autotools
             ${{ matrix.prefix }}-go
             ${{ matrix.prefix }}-ruby
@@ -74,6 +75,7 @@ jobs:
             gcc
             python
             python-setuptools
+            cython
             autotools
             ruby
             perl

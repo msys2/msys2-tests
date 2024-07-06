@@ -3,6 +3,7 @@
 set -e
 
 (cd setuptools-cext && ./test.sh)
+(cd setuptools-cython && ./test.sh)
 
 if [[ "$MSYSTEM" == "MSYS" ]]; then
     # Make sure python does not give away that we are not cygwin
