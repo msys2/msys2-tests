@@ -4,6 +4,7 @@ test('quick_exit', executable('quick_exit', 'quick_exit.cpp'))
 test('exception_handling', executable('exception_handling', 'exception_handling.cpp'))
 test('printf_format', executable('printf_format', 'printf_format.c'))
 test('pch', executable('pch', 'pch.cpp', cpp_pch : 'pch/pch.hpp'))
+test('libcpp_long_double', executable('libcpp_long_double', 'libcpp_long_double.cpp'))
 
 
 openmp = dependency('openmp')
