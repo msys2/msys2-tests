@@ -80,6 +80,7 @@ jobs:
             ruby
             perl
             mingw-w64-cross-gcc
+            mingw-w64-cross-mingwarm64-gcc
             gdb
             git
             gettext-devel

@@ -10,6 +10,12 @@ cd ..
 
 if [[ "$MSYSTEM" == "MSYS" ]]; then
     cd meson
+    meson setup --cross-file aarch64-w64-mingw32.txt _build_cross_arm64 --werror
+    meson compile -C _build_cross_arm64
+    # meson test -C _build_cross_arm64
+    cd ..
+
+    cd meson
     meson setup --cross-file i686-w64-mingw32.txt _build_cross_32 --werror
     meson compile -C _build_cross_32
     meson test -C _build_cross_32
