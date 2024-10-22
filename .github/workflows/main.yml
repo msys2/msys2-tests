@@ -48,7 +48,7 @@ jobs:
             ${{ matrix.prefix }}-${{ matrix.fc == 'gfortran' && 'gcc-fortran' || 'ninja'}}
             ${{ matrix.prefix }}-${{ matrix.fc == 'flang' && 'flang' || 'ninja'}}
             ${{ matrix.prefix }}-${{ matrix.cc }}
-            ${{ matrix.prefix }}-rust
+            ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'clang-i686') && 'rust' || 'ninja'}}
             ${{ matrix.prefix }}-python
             ${{ matrix.prefix }}-python-setuptools
             ${{ matrix.prefix }}-cython
