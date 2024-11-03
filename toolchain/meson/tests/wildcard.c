@@ -4,7 +4,7 @@
     #undef DO_WILDCARD
     #define DO_WILDCARD 0
 #else
-    #define DO_WILDCARD_DEFAULT 1
+    #define DO_WILDCARD_DEFAULT 0
     #ifndef DO_WILDCARD
         #define DO_WILDCARD DO_WILDCARD_DEFAULT
     #else
