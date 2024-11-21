@@ -1,0 +1,4 @@
+option('openmp',
+  type: 'boolean',
+  value: true,
+  description: 'Enable OpenMP support')

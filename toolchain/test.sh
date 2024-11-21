@@ -2,8 +2,13 @@
 
 set -e
 
+options=()
+if [[ "$MSYSTEM" == "CLANG32" ]]; then
+    options+=("-Dopenmp=false")
+fi
+
 cd meson
-meson setup _build --werror
+meson setup "${options[@]}" _build --werror
 meson compile -C _build
 meson test -C _build
 cd ..
