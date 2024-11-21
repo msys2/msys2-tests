@@ -42,7 +42,7 @@ jobs:
             ${{ matrix.prefix }}-cmake
             ${{ matrix.prefix }}-make
             ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'i686') &&  matrix.cc == 'gcc' && 'gcc-ada' || 'ninja'}}
-            ${{ matrix.prefix }}-${{ matrix.cc != 'gcc' && 'openmp' || 'ninja'}}
+            ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'i686') && matrix.cc != 'gcc' && 'openmp' || 'ninja'}}
             ${{ matrix.prefix }}-${{ matrix.cc != 'gcc' && 'lld' || 'ninja'}}
             ${{ matrix.prefix }}-${{ matrix.cc != 'gcc' && 'libc++' || 'ninja'}}
             ${{ matrix.prefix }}-${{ matrix.fc == 'gfortran' && 'gcc-fortran' || 'ninja'}}

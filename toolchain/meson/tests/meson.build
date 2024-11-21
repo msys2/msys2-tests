@@ -7,10 +7,12 @@ test('pch', executable('pch', 'pch.cpp', cpp_pch : 'pch/pch.hpp'))
 test('libcpp_long_double', executable('libcpp_long_double', 'libcpp_long_double.cpp'))
 
 
-openmp = dependency('openmp')
-env = environment()
-env.set('OMP_NUM_THREADS', '1')
-test('openmp_for_if', executable('openmp_for_if', 'openmp_for_if.c', dependencies : [openmp]), env : env)
+openmp = dependency('openmp', required: get_option('openmp'))
+if openmp.found()
+    env = environment()
+    env.set('OMP_NUM_THREADS', '1')
+    test('openmp_for_if', executable('openmp_for_if', 'openmp_for_if.c', dependencies : [openmp]), env : env)
+endif
 test('pow', executable('pow', 'pow.c', c_args: ['-fno-builtin', '-fno-strict-aliasing']))
 
 windres_res = import('windows').compile_resources('windres.rc')
