@@ -52,6 +52,7 @@ jobs:
             ${{ matrix.prefix }}-python
             ${{ matrix.prefix }}-python-setuptools
             ${{ matrix.prefix }}-cython
+            ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'clang-i686') && 'cython' || 'ninja'}}
             ${{ matrix.prefix }}-autotools
             ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'clang-i686') && 'go' || 'ninja'}}
             ${{ matrix.prefix }}-ruby
