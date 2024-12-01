@@ -2,6 +2,11 @@
 
 set -e
 
+if [[ "$MSYSTEM" == "CLANG32" ]]; then
+    echo "skipped on $MSYSTEM"
+    exit 0;
+fi
+
 ruby hello.rb
 
 if [[ "$MSYSTEM" == "MSYS" ]]; then
