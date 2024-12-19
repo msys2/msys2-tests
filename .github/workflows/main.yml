@@ -22,7 +22,7 @@ jobs:
         ]
 
     name: ${{ matrix.msystem }}-${{ matrix.cc }}
-    runs-on: windows-2022
+    runs-on: windows-2025
     env:
       CC: ${{ matrix.cc }}
       CXX: ${{ matrix.cxx }}
