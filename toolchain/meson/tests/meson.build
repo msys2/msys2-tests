@@ -36,6 +36,8 @@ test('posix_sem_named', executable('posix_sem_named', 'posix_sem_named.c', depen
 
 test('posix_shm', executable('posix_shm', 'posix_shm.c'))
 
+test('wcstok_nonconform', executable('wcstok_nonconform', 'wcstok_nonconform.c'))
+
 test('wildcard_on', executable('wildcard_on', 'wildcard.c', c_args: ['-DDO_WILDCARD=1']), args : ['tests/wildc*_on.exe'])
 test('wildcard_off', executable('wildcard_off', 'wildcard.c', c_args: ['-DDO_WILDCARD=0']), args : ['tests/wildc*_on.exe'])
 test('wildcard_default', executable('wildcard_default', 'wildcard.c'), args : ['tests/wildc*_on.exe'])
