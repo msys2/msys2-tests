@@ -3,7 +3,8 @@ test('snprintf_redef', executable('snprintf_redef', 'snprintf_redef.c'))
 test('quick_exit', executable('quick_exit', 'quick_exit.cpp'))
 test('exception_handling', executable('exception_handling', 'exception_handling.cpp'))
 test('printf_format', executable('printf_format', 'printf_format.c'))
-test('pch', executable('pch', 'pch.cpp', cpp_pch : 'pch/pch.hpp'))
+# FIXME: c++11 to work around gcc 15 git failing on its own deprecation warnings
+test('pch', executable('pch', 'pch.cpp', cpp_pch : 'pch/pch.hpp', override_options : ['cpp_std=c++11']))
 test('libcpp_long_double', executable('libcpp_long_double', 'libcpp_long_double.cpp'))
 
 
