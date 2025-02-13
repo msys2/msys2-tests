@@ -6,3 +6,17 @@ add_executable(example example.cxx)
 
 enable_testing()
 add_test(NAME test COMMAND $<TARGET_FILE:example>)
+
+# Make sure MSYS, CYGWIN, MINGW, WIN32 are defined correctly
+if(NOT CMAKE_CROSSCOMPILING)
+    set(MSYSTEM $ENV{MSYSTEM})
+    if(MSYSTEM STREQUAL "MSYS" OR MSYSTEM STREQUAL "CYGWIN")
+        if(NOT MSYS OR NOT CYGWIN OR WIN32 OR MINGW)
+            message(FATAL_ERROR "broken")
+        endif()
+    else()
+        if(NOT MINGW OR NOT WIN32 OR MSYS OR CYGWIN)
+            message(FATAL_ERROR "broken")
+        endif()
+    endif()
+endif()
