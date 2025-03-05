@@ -1,5 +1,7 @@
 #!/bin/bash
 
-./test-libc++-static.sh
-./test_cc_stack_size.sh
-./test-reproducible.sh
+set -e
+
+(cd ./test-libc++-static && ./test.sh)
+(cd test-cc-stack-size && ./test.sh)
+(cd test-reproducible && ./test.sh)
