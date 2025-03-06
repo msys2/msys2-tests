@@ -13,7 +13,15 @@ FARPROC WINAPI dll_failure_hook(unsigned dliNotify, PDelayLoadInfo pdli) {
       return (FARPROC)GetModuleHandle(NULL);
     }
     assert(0);
+  } else if (dliNotify == dliFailGetProc && pdli->dwLastError == ERROR_MOD_NOT_FOUND) {
+    printf("FAILURE-HOOK: Loading Proc %s from DLL %s\n", pdli->dlp.szProcName, pdli->szDll);
+    if (strcmp(pdli->szDll, "does_not_exist.exe") == 0) {
+      /* we return proc from main executable */
+      return (FARPROC)GetProcAddress(GetModuleHandle(NULL), pdli->dlp.szProcName);
+    }
+    assert(0);
   }
+
   /* ignore other requests */
   return 0;
 }
