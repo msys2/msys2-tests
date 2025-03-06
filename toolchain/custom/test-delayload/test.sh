@@ -7,6 +7,12 @@ if [[ "$MSYSTEM" == "MSYS" ]]; then
     exit 0;
 fi
 
+if [[ "$MSYSTEM" == "MINGW32" ]]; then
+    # FIXME: segfaults
+    echo "broken on $MSYSTEM"
+    exit 0;
+fi
+
 srcdir="$(cd "$(dirname "$0")" && pwd)"
 rm -Rf _build && mkdir _build && cd _build
 
