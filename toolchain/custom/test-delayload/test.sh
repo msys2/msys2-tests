@@ -2,6 +2,11 @@
 
 set -e
 
+if [[ "$MSYSTEM" == "MSYS" ]]; then
+    echo "skipped on $MSYSTEM"
+    exit 0;
+fi
+
 srcdir="$(cd "$(dirname "$0")" && pwd)"
 rm -Rf _build && mkdir _build && cd _build
 
