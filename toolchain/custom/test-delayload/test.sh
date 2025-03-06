@@ -14,7 +14,7 @@ rm -Rf _build && mkdir _build && cd _build
 if "${CC:-cc}" --version | grep -q 'clang'; then
     clang "$srcdir/main.c" -o main.exe
     llvm-dlltool -d "$srcdir/main.def" -l main.lib -D does_not_exist.exe
-    clang -Wl,-delayload=does_not_exist.exe -shared "$srcdir/lib.c" main.lib -o lib.dll
+    clang -fuse-ld=lld -Wl,-delayload=does_not_exist.exe -shared "$srcdir/lib.c" main.lib -o lib.dll
 else
     gcc "$srcdir/main.c" -o main.exe
     dlltool --input-def "$srcdir/main.def" --output-delaylib main.lib --dllname does_not_exist.exe
