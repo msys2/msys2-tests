@@ -50,42 +50,42 @@ lrwxrwxrwx 1    6  socketlnk -> socket
 lrwxrwxrwx 1    6  socketnativestrict -> socket
 lrwxrwxrwx 1    6  socketsys -> socket
 EOF
-diff <(cmd //c "dir /a menagerie" | head -n-2 | tail -n+6 | cut -c25- | sed -e 's|\[[A-Z]:\\.*\(\\.*\)\]$|[X:\\...\1]|;s/[0-9]\{3\}\( .*lnk\.lnk\)$/  0\1/') - <<'EOF'
+diff <(cmd //c "dir /a menagerie" | head -n-2 | tail -n+6 | cut -c25- | sed -e 's|\[[A-Z]:\\.*\(\\.*\)\]$|[X:\\...\1]|;s/\([0-9]\{1,3\},\)\?[0-9]\{3\}\( .*lnk\.lnk\)$/0\2/;s/^ *//') - <<'EOF'
 <DIR>          .
 <DIR>          ..
-           126 block.lnk
-            24 blockdeepcopy
-             0 blocklnk.lnk
+126 block.lnk
+24 blockdeepcopy
+0 blocklnk.lnk
 <JUNCTION>     blocknativestrict [...]
-            24 blocksys
-           126 char.lnk
-            22 chardeepcopy
-             0 charlnk.lnk
+24 blocksys
+126 char.lnk
+22 chardeepcopy
+0 charlnk.lnk
 <JUNCTION>     charnativestrict [...]
-            22 charsys
+22 charsys
 <DIR>          dir
 <DIR>          dirdeepcopy
 <JUNCTION>     dirjunction [X:\...\dir]
 <JUNCTION>     dirjunctiondeepcopy [X:\...\dir]
-             0 dirjunctionlnk.lnk
+0 dirjunctionlnk.lnk
 <SYMLINK>      dirjunctionnativestrict [dirjunction]
-            36 dirjunctionsys
-             0 dirlnk.lnk
+36 dirjunctionsys
+0 dirlnk.lnk
 <SYMLINKD>     dirnativestrict [dir]
-            20 dirsys
-           130 fifo.lnk
-            22 fifodeepcopy
-             0 fifolnk.lnk
+20 dirsys
+130 fifo.lnk
+22 fifodeepcopy
+0 fifolnk.lnk
 <JUNCTION>     fifonativestrict [...]
-            22 fifosys
-            23 file
-            23 filedeepcopy
-             0 filelnk.lnk
+22 fifosys
+23 file
+23 filedeepcopy
+0 filelnk.lnk
 <SYMLINK>      filenativestrict [file]
-            22 filesys
-            54 socket
-            26 socketdeepcopy
-             0 socketlnk.lnk
+22 filesys
+54 socket
+26 socketdeepcopy
+0 socketlnk.lnk
 <JUNCTION>     socketnativestrict [...]
-            26 socketsys
+26 socketsys
 EOF
