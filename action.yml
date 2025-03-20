@@ -1,0 +1,89 @@
+name: 'Run msys2-tests'
+description: 'Runs msys2-tests'
+runs:
+  using: 'composite'
+  steps:
+    - name: "test: toolchain"
+      shell: msys2 {0}
+      run: |
+        make -C '${{ github.action_path }}' -j toolchain
+
+    - name: "test: rust"
+      shell: msys2 {0}
+      run: |
+        make -C '${{ github.action_path }}' -j rust
+
+    - name: "test: python"
+      shell: msys2 {0}
+      run: |
+        make -C '${{ github.action_path }}' -j python
+
+    - name: "test: cmake"
+      shell: msys2 {0}
+      run: |
+        make -C '${{ github.action_path }}' -j cmake
+
+    - name: "test: autotools"
+      shell: msys2 {0}
+      run: |
+        make -C '${{ github.action_path }}' -j autotools
+
+    - name: "test: golang"
+      shell: msys2 {0}
+      run: |
+        make -C '${{ github.action_path }}' -j golang
+
+    - name: "test: fortran"
+      shell: msys2 {0}
+      run: |
+        make -C '${{ github.action_path }}' -j fortran
+
+    - name: "test: ruby"
+      shell: msys2 {0}
+      run: |
+        make -C '${{ github.action_path }}' -j ruby
+
+    - name: "test: perl"
+      shell: msys2 {0}
+      run: |
+        make -C '${{ github.action_path }}' -j perl
+
+    - name: "test: nodejs"
+      shell: msys2 {0}
+      run: |
+        make -C '${{ github.action_path }}' -j nodejs
+
+    - name: "test: runtime"
+      shell: msys2 {0}
+      run: |
+        make -C '${{ github.action_path }}' -j runtime
+
+    - name: "test: ada"
+      shell: msys2 {0}
+      run: |
+        make -C '${{ github.action_path }}' -j ada
+
+    - name: "test: tools"
+      shell: msys2 {0}
+      run: |
+        make -C '${{ github.action_path }}' -j tools
+
+    - name: "test: makepkg"
+      shell: msys2 {0}
+      run: |
+        make -C '${{ github.action_path }}' -j makepkg
+
+    - name: "test: libtool"
+      shell: msys2 {0}
+      run: |
+        make -C '${{ github.action_path }}' -j libtool
+
+    - name: "test: gettext"
+      shell: msys2 {0}
+      run: |
+        make -C '${{ github.action_path }}' -j gettext
+
+    - name: "test: keyring"
+      shell: msys2 {0}
+      run: |
+        make -C '${{ github.action_path }}' -j keyring
