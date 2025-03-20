@@ -1,0 +1,89 @@
+name: 'Generate matrix for msys2-tests'
+description: 'Generate GitHub Actions matrix for running msys2-tests'
+outputs:
+  matrix:
+    description: 'matrix suitable for use in subsequent jobs'
+    value: ${{ steps.generate.outputs.matrix }}
+runs:
+  using: 'composite'
+  steps:
+    - name: Generate matrix
+      shell: python
+      id: generate
+      run: |
+        import json
+        import os
+        matrix = [
+          { 'msystem': 'MINGW64', 'prefix':  'mingw-w64-x86_64', 'cc': 'gcc', 'cxx': 'g++', 'fc': 'gfortran' },
+          { 'msystem': 'MINGW32', 'prefix':  'mingw-w64-i686', 'cc': 'gcc', 'cxx': 'g++', 'fc': 'gfortran' },
+          { 'msystem': 'UCRT64',  'prefix':  'mingw-w64-ucrt-x86_64', 'cc': 'gcc', 'cxx': 'g++', 'fc': 'gfortran' },
+          { 'msystem': 'UCRT64',  'prefix':  'mingw-w64-ucrt-x86_64', 'cc': 'clang', 'cxx': 'clang++', 'fc': '' },
+          { 'msystem': 'CLANG64', 'prefix':  'mingw-w64-clang-x86_64', 'cc': 'clang', 'cxx': 'clang++', 'fc': 'flang' },
+          { 'msystem': 'CLANGARM64', 'prefix': 'mingw-w64-clang-aarch64', 'cc': 'clang', 'cxx': 'clang++', 'fc': 'flang' },
+          { 'msystem': 'MSYS', 'cc': 'gcc', 'cxx': 'g++', 'fc': 'gfortran' },
+        ]
+        for entry in matrix:
+          entry['runner'] = 'windows-2025' if entry['msystem'] != 'CLANGARM64' else 'windows-11-arm'
+          if entry['msystem'] != 'MSYS':
+            entry['packages'] = [
+              f"{ entry['prefix'] }-meson",
+              f"{ entry['prefix'] }-ninja",
+              f"{ entry['prefix'] }-cmake",
+              f"{ entry['prefix'] }-make",
+              f"{ entry['prefix'] }-{ entry['cc'] }",
+              f"{ entry['prefix'] }-rust",
+              f"{ entry['prefix'] }-python",
+              f"{ entry['prefix'] }-python-setuptools",
+              f"{ entry['prefix'] }-cython",
+              f"{ entry['prefix'] }-autotools",
+              f"{ entry['prefix'] }-go",
+              f"{ entry['prefix'] }-ruby",
+              f"{ entry['prefix'] }-gettext",
+              "make",
+              "git"
+            ]
+
+            if 'clang-aarch64' not in entry['prefix']:
+              entry['packages'].append(f"{ entry['prefix'] }-gdb")
+
+            if entry['cc'] != "gcc":
+              entry['packages'].extend([
+                f"{ entry['prefix'] }-lld",
+                f"{ entry['prefix'] }-libc++"
+              ])
+            if entry['fc'] == 'gfortran':
+              entry['packages'].append(f"{ entry['prefix'] }-gcc-fortran")
+            elif entry['fc'] != '':
+              entry['packages'].append(f"{ entry['prefix'] }-{ entry['fc'] }")
+            if 'i686' not in entry['prefix']:
+              entry['packages'].extend([
+                f"{ entry['prefix'] }-perl",
+                f"{ entry['prefix'] }-nodejs"
+              ])
+              if entry['cc'] == 'gcc':
+                entry['packages'].append(f"{ entry['prefix'] }-gcc-ada")
+              else:
+                entry['packages'].append(f"{ entry['prefix'] }-openmp")
+          else:
+            entry['packages'] = [
+              'meson',
+              'ninja',
+              'cmake',
+              'make',
+              'gcc',
+              'python',
+              'python-setuptools',
+              'cython',
+              'autotools',
+              'ruby',
+              'perl',
+              'mingw-w64-cross-gcc',
+              'mingw-w64-cross-mingwarm64-gcc',
+              'gdb',
+              'git',
+              'gettext-devel'
+            ]
+          entry['packages'] = " ".join(entry['packages'])
+
+        with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as h:
+          h.write(f"matrix={json.dumps(matrix)}\n")

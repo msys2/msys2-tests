@@ -8,22 +8,24 @@ on:
     - cron: '0 3 * * *'
 
 jobs:
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: matrix
+        uses: ./gha-matrix-gen
+
   build:
+    needs: generate-matrix
     strategy:
       fail-fast: false
-      matrix:
-        include: [
-          { msystem: MINGW64, prefix:  mingw-w64-x86_64, cc: gcc, cxx: g++, fc: gfortran },
-          { msystem: MINGW32, prefix:  mingw-w64-i686, cc: gcc, cxx: g++, fc: gfortran },
-          { msystem: UCRT64,  prefix:  mingw-w64-ucrt-x86_64, cc: gcc, cxx: g++, fc: gfortran },
-          { msystem: UCRT64,  prefix:  mingw-w64-ucrt-x86_64, cc: clang, cxx: clang++, fc: '' },
-          { msystem: CLANG64, prefix:  mingw-w64-clang-x86_64, cc: clang, cxx: clang++, fc: flang },
-          { msystem: CLANGARM64, prefix:  mingw-w64-clang-aarch64, cc: clang, cxx: clang++, fc: flang },
-          { msystem: MSYS, cc: gcc, cxx: g++, fc: gfortran },
-        ]
+      matrix: 
+        include: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
 
     name: ${{ matrix.msystem }}-${{ matrix.cc }}
-    runs-on: ${{ matrix.msystem == 'CLANGARM64' && 'windows-11-arm' || 'windows-2025' }}
+    runs-on: ${{ matrix.runner }}
     env:
       CC: ${{ matrix.cc }}
       CXX: ${{ matrix.cxx }}
@@ -32,58 +34,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: msys2/setup-msys2@v2
-        if: ${{ matrix.msystem != 'MSYS' }}
         with:
           msystem: ${{ matrix.msystem }}
           update: true
-          install: >-
-            ${{ matrix.prefix }}-meson
-            ${{ matrix.prefix }}-ninja
-            ${{ matrix.prefix }}-cmake
-            ${{ matrix.prefix }}-make
-            ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'i686') &&  matrix.cc == 'gcc' && 'gcc-ada' || 'ninja'}}
-            ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'i686') && matrix.cc != 'gcc' && 'openmp' || 'ninja'}}
-            ${{ matrix.prefix }}-${{ matrix.cc != 'gcc' && 'lld' || 'ninja'}}
-            ${{ matrix.prefix }}-${{ matrix.cc != 'gcc' && 'libc++' || 'ninja'}}
-            ${{ matrix.prefix }}-${{ matrix.fc == 'gfortran' && 'gcc-fortran' || 'ninja'}}
-            ${{ matrix.prefix }}-${{ matrix.fc == 'flang' && 'flang' || 'ninja'}}
-            ${{ matrix.prefix }}-${{ matrix.cc }}
-            ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'clang-i686') && 'rust' || 'ninja'}}
-            ${{ matrix.prefix }}-python
-            ${{ matrix.prefix }}-python-setuptools
-            ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'clang-i686') && 'cython' || 'ninja'}}
-            ${{ matrix.prefix }}-autotools
-            ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'clang-i686') && 'go' || 'ninja'}}
-            ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'clang-i686') && 'ruby' || 'ninja'}}
-            ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'i686') && 'perl' || 'ninja'}}
-            ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'i686') && 'nodejs' || 'ninja'}}
-            ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'clang-aarch64') && 'gdb' || 'ninja'}}
-            ${{ matrix.prefix }}-gettext
-            make
-            git
-
-      - uses: msys2/setup-msys2@v2
-        if: ${{ matrix.msystem == 'MSYS' }}
-        with:
-          msystem: ${{ matrix.msystem }}
-          update: true
-          install: >-
-            meson
-            ninja
-            cmake
-            make
-            gcc
-            python
-            python-setuptools
-            cython
-            autotools
-            ruby
-            perl
-            mingw-w64-cross-gcc
-            mingw-w64-cross-mingwarm64-gcc
-            gdb
-            git
-            gettext-devel
+          install: ${{ matrix.packages }}
 
       - name: Add staging repo
         shell: msys2 {0}
