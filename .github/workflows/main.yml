@@ -18,11 +18,12 @@ jobs:
           { msystem: UCRT64,  prefix:  mingw-w64-ucrt-x86_64, cc: gcc, cxx: g++, fc: gfortran },
           { msystem: UCRT64,  prefix:  mingw-w64-ucrt-x86_64, cc: clang, cxx: clang++, fc: '' },
           { msystem: CLANG64, prefix:  mingw-w64-clang-x86_64, cc: clang, cxx: clang++, fc: flang },
+          { msystem: CLANGARM64, prefix:  mingw-w64-clang-aarch64, cc: clang, cxx: clang++, fc: flang },
           { msystem: MSYS, cc: gcc, cxx: g++, fc: gfortran },
         ]
 
     name: ${{ matrix.msystem }}-${{ matrix.cc }}
-    runs-on: windows-2025
+    runs-on: ${{ matrix.msystem == 'CLANGARM64' && 'windows-11-arm' || 'windows-2025' }}
     env:
       CC: ${{ matrix.cc }}
       CXX: ${{ matrix.cxx }}
@@ -56,7 +57,7 @@ jobs:
             ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'clang-i686') && 'ruby' || 'ninja'}}
             ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'i686') && 'perl' || 'ninja'}}
             ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'i686') && 'nodejs' || 'ninja'}}
-            ${{ matrix.prefix }}-gdb
+            ${{ matrix.prefix }}-${{ !contains(matrix.prefix, 'clang-aarch64') && 'gdb' || 'ninja'}}
             ${{ matrix.prefix }}-gettext
             make
             git
