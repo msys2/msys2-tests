@@ -1,0 +1,3 @@
+LIBRARY "WS2_32.dll"
+EXPORTS
+htonl@4
