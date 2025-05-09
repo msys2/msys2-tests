@@ -14,5 +14,6 @@ fi
 
 FC="${FC:-gfortran}"
 
+"$FC" --version
 "$FC" hello.f90 -o hello.exe
 ./hello.exe
