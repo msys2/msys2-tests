@@ -40,7 +40,10 @@ runs:
               f"{ entry['prefix'] }-ruby",
               f"{ entry['prefix'] }-gettext",
               "make",
-              "git"
+              "git",
+              'zsh',
+              'fish',
+              'mksh',
             ]
 
             if 'clang-aarch64' not in entry['prefix']:
@@ -82,7 +85,10 @@ runs:
               'mingw-w64-cross-mingwarm64-gcc',
               'gdb',
               'git',
-              'gettext-devel'
+              'gettext-devel',
+              'zsh',
+              'fish',
+              'mksh',
             ]
           entry['packages'] = " ".join(entry['packages'])
 
