@@ -13,3 +13,5 @@ fi
 if [[ "$MSYSTEM" == "MSYS" ]]; then
     ./gnupg.sh
 fi
+
+./shells.sh
