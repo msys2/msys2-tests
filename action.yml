@@ -3,87 +3,87 @@ description: 'Runs msys2-tests'
 runs:
   using: 'composite'
   steps:
-    - name: "test: toolchain"
-      shell: msys2 {0}
+    - shell: msys2 {0}
       run: |
+        . '${{ github.action_path }}/group_helper.sh' "test: toolchain"
         make -C '${{ github.action_path }}' -j toolchain
 
-    - name: "test: rust"
-      shell: msys2 {0}
+    - shell: msys2 {0}
       run: |
+        . '${{ github.action_path }}/group_helper.sh' "test: rust"
         make -C '${{ github.action_path }}' -j rust
 
-    - name: "test: python"
-      shell: msys2 {0}
+    - shell: msys2 {0}
       run: |
+        . '${{ github.action_path }}/group_helper.sh' "test: python"
         make -C '${{ github.action_path }}' -j python
 
-    - name: "test: cmake"
-      shell: msys2 {0}
+    - shell: msys2 {0}
       run: |
+        . '${{ github.action_path }}/group_helper.sh' "test: cmake"
         make -C '${{ github.action_path }}' -j cmake
 
-    - name: "test: autotools"
-      shell: msys2 {0}
+    - shell: msys2 {0}
       run: |
+        . '${{ github.action_path }}/group_helper.sh' "test: autotools"
         make -C '${{ github.action_path }}' -j autotools
 
-    - name: "test: golang"
-      shell: msys2 {0}
+    - shell: msys2 {0}
       run: |
+        . '${{ github.action_path }}/group_helper.sh' "test: golang"
         make -C '${{ github.action_path }}' -j golang
 
-    - name: "test: fortran"
-      shell: msys2 {0}
+    - shell: msys2 {0}
       run: |
+        . '${{ github.action_path }}/group_helper.sh' "test: fortran"
         make -C '${{ github.action_path }}' -j fortran
 
-    - name: "test: ruby"
-      shell: msys2 {0}
+    - shell: msys2 {0}
       run: |
+        . '${{ github.action_path }}/group_helper.sh' "test: ruby"
         make -C '${{ github.action_path }}' -j ruby
 
-    - name: "test: perl"
-      shell: msys2 {0}
+    - shell: msys2 {0}
       run: |
+        . '${{ github.action_path }}/group_helper.sh' "test: perl"
         make -C '${{ github.action_path }}' -j perl
 
-    - name: "test: nodejs"
-      shell: msys2 {0}
+    - shell: msys2 {0}
       run: |
+        . '${{ github.action_path }}/group_helper.sh' "test: nodejs"
         make -C '${{ github.action_path }}' -j nodejs
 
-    - name: "test: runtime"
-      shell: msys2 {0}
+    - shell: msys2 {0}
       run: |
+        . '${{ github.action_path }}/group_helper.sh' "test: runtime"
         make -C '${{ github.action_path }}' -j runtime
 
-    - name: "test: ada"
-      shell: msys2 {0}
+    - shell: msys2 {0}
       run: |
+        . '${{ github.action_path }}/group_helper.sh' "test: ada"
         make -C '${{ github.action_path }}' -j ada
 
-    - name: "test: tools"
-      shell: msys2 {0}
+    - shell: msys2 {0}
       run: |
+        . '${{ github.action_path }}/group_helper.sh' "test: tools"
         make -C '${{ github.action_path }}' -j tools
 
-    - name: "test: makepkg"
-      shell: msys2 {0}
+    - shell: msys2 {0}
       run: |
+        . '${{ github.action_path }}/group_helper.sh' "test: makepkg"
         make -C '${{ github.action_path }}' -j makepkg
 
-    - name: "test: libtool"
-      shell: msys2 {0}
+    - shell: msys2 {0}
       run: |
+        . '${{ github.action_path }}/group_helper.sh' "test: libtool"
         make -C '${{ github.action_path }}' -j libtool
 
-    - name: "test: gettext"
-      shell: msys2 {0}
+    - shell: msys2 {0}
       run: |
+        . '${{ github.action_path }}/group_helper.sh' "test: gettext"
         make -C '${{ github.action_path }}' -j gettext
 
-    - name: "test: keyring"
-      shell: msys2 {0}
+    - shell: msys2 {0}
       run: |
+        . '${{ github.action_path }}/group_helper.sh' "test: keyring"
         make -C '${{ github.action_path }}' -j keyring
