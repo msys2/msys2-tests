@@ -62,14 +62,7 @@ FARPROC WINAPI dll_notify_hook(unsigned dliNotify, PDelayLoadInfo pdli) {
   return NULL;
 }
 
-#if defined(__MINGW32__) && !defined(__MINGW64__) && defined(__GNUC__) && !defined(__clang__)
-// MINGW32 crashes with dllimport
-// https://sourceforge.net/p/mingw-w64/mailman/mingw-w64-public/thread/ea87573f-65ea-44a2-b4bb-ca96c0a136ab@akeo.ie/
-// https://sourceware.org/bugzilla/show_bug.cgi?id=14339
-int main_f(void);
-#else
 __declspec(dllimport) int main_f(void);
-#endif
 
 int lib_f(void) {
   printf("LIB: call main_f\n");
