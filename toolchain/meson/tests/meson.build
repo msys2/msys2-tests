@@ -7,7 +7,7 @@ test('printf_format', executable('printf_format', 'printf_format.c'))
 test('pch', executable('pch', 'pch.cpp', cpp_pch : 'pch/pch.hpp', override_options : ['cpp_std=c++11']))
 test('libcpp_long_double', executable('libcpp_long_double', 'libcpp_long_double.cpp'))
 test('fstat64', executable('fstat64', 'fstat64.c'))
-
+test('pformat_wputchars', executable('pformat_wputchars', 'pformat_wputchars.c'))
 
 openmp = dependency('openmp', required: get_option('openmp'))
 if openmp.found()
