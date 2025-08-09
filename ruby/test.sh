@@ -7,6 +7,7 @@ if [[ "$MSYSTEM" == "CLANG32" ]]; then
     exit 0;
 fi
 
+ruby --version
 ruby hello.rb
 
 if [[ "$MSYSTEM" == "MSYS" ]]; then

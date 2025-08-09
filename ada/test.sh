@@ -7,6 +7,8 @@ if [[ "$MSYSTEM" == CLANG* || "$MSYSTEM" == "MINGW32" || "$MSYSTEM" == "MSYS" ||
     exit 0;
 fi
 
+gnatmake --version
+
 gnatmake hello.adb
 ./hello.exe
 

@@ -6,6 +6,8 @@ export GNUPGHOME=$(mktemp -d)
 TEMPDIR=$(mktemp -d)
 cd "$TEMPDIR"
 
+gpg --version
+
 # Generate a key pair
 gpg --batch --passphrase '' --quick-generate-key "Test User <test@example.com>"
 

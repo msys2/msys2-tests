@@ -7,5 +7,6 @@ if [[ "$MSYSTEM" == "MSYS" || "$MSYSTEM" == "CLANG32" ]]; then
     exit 0;
 fi
 
+rustc --version
 rustc hello.rs
 ./hello.exe

@@ -2,6 +2,8 @@
 
 set -e
 
+python --version
+
 (cd setuptools-cext && ./test.sh)
 (cd setuptools-cython && ./test.sh)
 

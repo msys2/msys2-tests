@@ -11,6 +11,8 @@ else
     generators=('Ninja' 'Unix Makefiles')
 fi
 
+cmake --version
+
 for gen in "${generators[@]}"
 do
     rm -Rf _build

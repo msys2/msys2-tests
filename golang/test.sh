@@ -7,6 +7,7 @@ if [[ "$MSYSTEM" == "MSYS" ]] || [[ "$MSYSTEM" == "CLANG32" ]]; then
     exit 0;
 fi
 
+go version
 go build hello.go
 ./hello.exe
 

@@ -7,4 +7,5 @@ if [[ "$MSYSTEM" == "MSYS" || "$MSYSTEM" == "CLANG32" || "$MSYSTEM" == "MINGW32"
     exit 0;
 fi
 
+node --version
 node hello.mjs

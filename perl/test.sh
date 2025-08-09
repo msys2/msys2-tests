@@ -7,4 +7,5 @@ if [[ "$MSYSTEM" == "CLANG32" || "$MSYSTEM" == "MINGW32" ]]; then
     exit 0;
 fi
 
+perl --version
 perl hello.pl

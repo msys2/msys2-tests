@@ -7,6 +7,8 @@ export GIT_COMMITTER_EMAIL="test@example.com"
 export GIT_AUTHOR_NAME="Test User"
 export GIT_AUTHOR_EMAIL="test@example.com"
 
+git --version
+
 # some random git actions to smoketest git
 rm -rf _tmp_repo _tmp_cloned
 mkdir _tmp_repo
