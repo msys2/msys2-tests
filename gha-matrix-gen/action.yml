@@ -89,6 +89,7 @@ runs:
               'zsh',
               'fish',
               'mksh',
+              'rust',
             ]
           entry['packages'] = " ".join(entry['packages'])
 
