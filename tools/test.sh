@@ -15,3 +15,5 @@ if [[ "$MSYSTEM" == "MSYS" ]]; then
 fi
 
 ./shells.sh
+
+./openssh.sh

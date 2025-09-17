@@ -44,6 +44,7 @@ runs:
               'zsh',
               'fish',
               'mksh',
+              'openssh',
             ]
 
             if 'clang-aarch64' not in entry['prefix']:
@@ -90,6 +91,7 @@ runs:
               'fish',
               'mksh',
               'rust',
+              'openssh',
             ]
           entry['packages'] = " ".join(entry['packages'])
 
