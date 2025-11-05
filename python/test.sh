@@ -9,7 +9,8 @@ python --version
 
 if [[ "$MSYSTEM" == "MSYS" ]]; then
     # Make sure python does not give away that we are not cygwin
-    platform="$(python -c "import sys; print(sys.platform)")"
-    [[ "$platform" == "cygwin" ]] || (echo "wrong platform: $platform"; false)
-    # TODO: sysconfig.get_platform() depends on uname
+    sys_platform="$(python -c "import sys; print(sys.platform)")"
+    [[ "$sys_platform" == "cygwin" ]] || (echo "wrong platform: $sys_platform"; false)
+    sysconfig_platform="$(python -c "import sysconfig; print(sysconfig.get_platform())")"
+    [[ "$sysconfig_platform" == "cygwin-$MSYSTEM_CARCH" ]] || (echo "wrong platform: $sysconfig_platform"; false)
 fi
