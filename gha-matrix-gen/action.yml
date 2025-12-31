@@ -50,6 +50,9 @@ runs:
             if 'clang-aarch64' not in entry['prefix']:
               entry['packages'].append(f"{ entry['prefix'] }-gdb")
 
+            if 'i686' not in entry['prefix']:
+              entry['packages'].append(f"{ entry['prefix'] }-python-setuptools-rust")
+
             if entry['cc'] != "gcc":
               entry['packages'].extend([
                 f"{ entry['prefix'] }-lld",
@@ -78,6 +81,7 @@ runs:
               'gcc',
               'python',
               'python-setuptools',
+              'python-setuptools-rust',
               'cython',
               'autotools',
               'ruby',

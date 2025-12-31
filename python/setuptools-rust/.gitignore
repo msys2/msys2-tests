@@ -1,0 +1,5 @@
+target/
+setuptools_rust_test/__pycache__/
+setuptools_rust_test/*.dll
+setuptools_rust_test/*.pyd
+build/
