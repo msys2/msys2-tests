@@ -35,7 +35,6 @@ runs:
               f"{ entry['prefix'] }-python-setuptools",
               f"{ entry['prefix'] }-cython",
               f"{ entry['prefix'] }-autotools",
-              f"{ entry['prefix'] }-go",
               f"{ entry['prefix'] }-ruby",
               f"{ entry['prefix'] }-gettext",
               f"{ entry['prefix'] }-git",
@@ -52,6 +51,7 @@ runs:
             if 'i686' not in entry['prefix']:
               entry['packages'].append(f"{ entry['prefix'] }-python-setuptools-rust")
               entry['packages'].append(f"{ entry['prefix'] }-rust")
+              entry['packages'].append(f"{ entry['prefix'] }-go")
 
             if entry['cc'] != "gcc":
               entry['packages'].extend([
