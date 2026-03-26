@@ -71,7 +71,7 @@ runs:
               if entry['cc'] == 'gcc':
                 entry['packages'].append(f"{ entry['prefix'] }-gcc-ada")
               else:
-                entry['packages'].append(f"{ entry['prefix'] }-openmp")
+                entry['packages'].append(f"{ entry['prefix'] }-llvm-openmp")
           else:
             entry['packages'] = [
               'meson',
