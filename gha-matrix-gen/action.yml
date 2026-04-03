@@ -38,6 +38,7 @@ runs:
               f"{ entry['prefix'] }-ruby",
               f"{ entry['prefix'] }-gettext",
               f"{ entry['prefix'] }-git",
+              f"{ entry['prefix'] }-omp",
               "make",
               'zsh',
               'fish',
