@@ -10,6 +10,8 @@ fi
 
 ./git.sh
 
+./asciidoctor.sh
+
 if [[ "$MSYSTEM" == "MSYS" ]]; then
     ./gnupg.sh
 fi
