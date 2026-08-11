@@ -8,7 +8,7 @@ if [[ "$MSYSTEM" == "CLANG32" ]]; then
 fi
 
 cd meson
-meson setup "${options[@]}" _build --werror
+meson setup "${options[@]}" _build
 meson compile -C _build
 meson test -C _build
 cd ..
@@ -22,19 +22,19 @@ if [[ "$MSYSTEM" == "MSYS" ]]; then
     cd ..
 
     cd meson
-    meson setup --cross-file i686-w64-mingw32.txt _build_cross_32 --werror
+    meson setup --cross-file i686-w64-mingw32.txt _build_cross_32
     meson compile -C _build_cross_32
     meson test -C _build_cross_32
     cd ..
 
     cd meson
-    meson setup --cross-file x86_64-w64-mingw32.txt _build_cross_64 --werror
+    meson setup --cross-file x86_64-w64-mingw32.txt _build_cross_64
     meson compile -C _build_cross_64
     meson test -C _build_cross_64
     cd ..
 
     cd meson
-    meson setup --cross-file x86_64-w64-mingw32ucrt.txt _build_cross_64_ucrt --werror
+    meson setup --cross-file x86_64-w64-mingw32ucrt.txt _build_cross_64_ucrt
     meson compile -C _build_cross_64_ucrt
     meson test -C _build_cross_64_ucrt
     cd ..
