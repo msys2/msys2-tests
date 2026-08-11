@@ -6,4 +6,6 @@ project('msys2-toolchain-tests', 'c', 'cpp',
   ]
 )
 
+add_project_arguments('-Werror', language : ['c', 'cpp'])
+
 subdir('tests')
