@@ -19,3 +19,5 @@ fi
 ./shells.sh
 
 ./openssh.sh
+
+./patch.sh
