@@ -43,7 +43,6 @@ runs:
               "make",
               'zsh',
               'fish',
-              'mksh',
               'openssh',
               'patch',
             ]
@@ -97,7 +96,6 @@ runs:
               'gettext-devel',
               'zsh',
               'fish',
-              'mksh',
               'rust',
               'openssh',
               'patch',
