@@ -23,6 +23,8 @@ runs:
           { 'msystem': 'MSYS', 'cc': 'gcc', 'cxx': 'g++', 'fc': 'gfortran' },
         ]
         for entry in matrix:
+          entry['name'] = f"{entry['msystem']}-{entry['cc']}"
+          entry['type'] = 'host'
           entry['runner'] = 'windows-2025' if entry['msystem'] != 'CLANGARM64' else 'windows-11-arm'
           if entry['msystem'] != 'MSYS':
             entry['packages'] = [
@@ -101,6 +103,8 @@ runs:
               'patch',
             ]
           entry['packages'] = " ".join(entry['packages'])
+
+        matrix.extend([{**entry, 'name': f"{entry['name']}-docker", 'type': 'docker', 'runner': 'windows-2022'} for entry in matrix if entry['msystem'] == 'MSYS' or (entry['msystem'] == 'UCRT64' and entry['cc'] == 'gcc')])
 
         with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as h:
           h.write(f"matrix={json.dumps(matrix)}\n")
