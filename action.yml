@@ -4,86 +4,54 @@ runs:
   using: 'composite'
   steps:
     - shell: msys2 {0}
+      if: matrix.type != 'docker'
       run: |
-        . '${{ github.action_path }}/group_helper.sh' "test: toolchain"
-        make -C '${{ github.action_path }}' -j toolchain
+        bash '${{ github.action_path }}/run-tests.sh'
 
-    - shell: msys2 {0}
+    - name: Locate MSYS2 installation
+      if: matrix.type == 'docker'
+      id: msys2-location
+      shell: msys2 {0}
       run: |
-        . '${{ github.action_path }}/group_helper.sh' "test: rust"
-        make -C '${{ github.action_path }}' -j rust
+        echo "path=$(cygpath -am /)" >> "$GITHUB_OUTPUT"
 
-    - shell: msys2 {0}
+    - name: Run tests in Docker
+      if: matrix.type == 'docker'
+      shell: pwsh
+      env:
+        MSYS2_LOCATION: ${{ steps.msys2-location.outputs.path }}
+        TEST_PATH: ${{ github.action_path }}
       run: |
-        . '${{ github.action_path }}/group_helper.sh' "test: python"
-        make -C '${{ github.action_path }}' -j python
+        # https://github.com/actions/runner-images/issues/13729
+        if ((Get-Service docker).Status -ne 'Running') {
+          Start-Service docker
+        }
 
-    - shell: msys2 {0}
-      run: |
-        . '${{ github.action_path }}/group_helper.sh' "test: cmake"
-        make -C '${{ github.action_path }}' -j cmake
+        $build = [Environment]::OSVersion.Version.Build
+        $tag = switch ($build) {
+          20348 { 'ltsc2022' }
+          26100 { 'ltsc2025' }
+          default { throw "Unsupported Windows host build: $build" }
+        }
 
-    - shell: msys2 {0}
-      run: |
-        . '${{ github.action_path }}/group_helper.sh' "test: autotools"
-        make -C '${{ github.action_path }}' -j autotools
+        $container = 'msys2-tests'
+        # Keep the container running for the subsequent docker exec calls.
+        docker run --detach --interactive --name $container `
+          --mount "type=bind,source=$env:MSYS2_LOCATION,target=C:\msys64" `
+          --env MSYSTEM --env CC --env CXX --env FC --env CHERE_INVOKING=1 `
+          "mcr.microsoft.com/windows/servercore:$tag" `
+          cmd.exe /Q /K
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-    - shell: msys2 {0}
-      run: |
-        . '${{ github.action_path }}/group_helper.sh' "test: golang"
-        make -C '${{ github.action_path }}' -j golang
+        try {
+          # Copy the action's tests to local storage.
+          docker exec $container cmd.exe /D /C 'mkdir C:\msys2-tests'
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          docker cp "$env:TEST_PATH/." "${container}:C:/msys2-tests"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-    - shell: msys2 {0}
-      run: |
-        . '${{ github.action_path }}/group_helper.sh' "test: fortran"
-        make -C '${{ github.action_path }}' -j fortran
-
-    - shell: msys2 {0}
-      run: |
-        . '${{ github.action_path }}/group_helper.sh' "test: ruby"
-        make -C '${{ github.action_path }}' -j ruby
-
-    - shell: msys2 {0}
-      run: |
-        . '${{ github.action_path }}/group_helper.sh' "test: perl"
-        make -C '${{ github.action_path }}' -j perl
-
-    - shell: msys2 {0}
-      run: |
-        . '${{ github.action_path }}/group_helper.sh' "test: nodejs"
-        make -C '${{ github.action_path }}' -j nodejs
-
-    - shell: msys2 {0}
-      run: |
-        . '${{ github.action_path }}/group_helper.sh' "test: runtime"
-        make -C '${{ github.action_path }}' -j runtime
-
-    - shell: msys2 {0}
-      run: |
-        . '${{ github.action_path }}/group_helper.sh' "test: ada"
-        make -C '${{ github.action_path }}' -j ada
-
-    - shell: msys2 {0}
-      run: |
-        . '${{ github.action_path }}/group_helper.sh' "test: tools"
-        make -C '${{ github.action_path }}' -j tools
-
-    - shell: msys2 {0}
-      run: |
-        . '${{ github.action_path }}/group_helper.sh' "test: makepkg"
-        make -C '${{ github.action_path }}' -j makepkg
-
-    - shell: msys2 {0}
-      run: |
-        . '${{ github.action_path }}/group_helper.sh' "test: libtool"
-        make -C '${{ github.action_path }}' -j libtool
-
-    - shell: msys2 {0}
-      run: |
-        . '${{ github.action_path }}/group_helper.sh' "test: gettext"
-        make -C '${{ github.action_path }}' -j gettext
-
-    - shell: msys2 {0}
-      run: |
-        . '${{ github.action_path }}/group_helper.sh' "test: keyring"
-        make -C '${{ github.action_path }}' -j keyring
+          docker exec $container C:\msys64\usr\bin\bash.exe -lc 'bash /c/msys2-tests/run-tests.sh'
+          exit $LASTEXITCODE
+        } finally {
+          docker rm --force $container
+        }
