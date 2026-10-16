@@ -50,7 +50,7 @@ runs:
           docker cp "$env:TEST_PATH/." "${container}:C:/msys2-tests"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-          docker exec --env MSYS2_TESTS_IN_DOCKER=1 $container C:\msys64\usr\bin\bash.exe -lc 'bash /c/msys2-tests/run-tests.sh'
+          docker exec $container C:\msys64\usr\bin\bash.exe -lc 'bash /c/msys2-tests/run-tests.sh'
           exit $LASTEXITCODE
         } finally {
           docker rm --force $container
