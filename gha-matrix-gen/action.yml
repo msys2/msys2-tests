@@ -68,14 +68,13 @@ runs:
             elif entry['fc'] != '':
               entry['packages'].append(f"{ entry['prefix'] }-{ entry['fc'] }")
             if 'i686' not in entry['prefix']:
-              entry['packages'].extend([
-                f"{ entry['prefix'] }-perl",
-                f"{ entry['prefix'] }-nodejs"
-              ])
+              entry['packages'].append(f"{ entry['prefix'] }-perl")
               if entry['cc'] == 'gcc':
                 entry['packages'].append(f"{ entry['prefix'] }-gcc-ada")
               else:
                 entry['packages'].append(f"{ entry['prefix'] }-llvm-openmp")
+            if 'i686' not in entry['prefix'] and 'MINGW64' not in entry['msystem']:
+              entry['packages'].append(f"{ entry['prefix'] }-nodejs")
           else:
             entry['packages'] = [
               'meson',
