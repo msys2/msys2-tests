@@ -43,6 +43,8 @@ test('wildcard_on', executable('wildcard_on', 'wildcard.c', c_args: ['-DDO_WILDC
 test('wildcard_off', executable('wildcard_off', 'wildcard.c', c_args: ['-DDO_WILDCARD=0']), args : ['tests/wildc*_on.exe'])
 test('wildcard_default', executable('wildcard_default', 'wildcard.c'), args : ['tests/wildc*_on.exe'])
 
+test('tls_destructor_order', executable('tls_destructor_order', 'tls_destructor_order.cpp'))
+
 compiler = meson.get_compiler('c')
 if compiler.get_id() == 'clang' and compiler.get_linker_id() == 'ld.lld'
     guard_none = executable('guard_none', 'cfguard-test.c', c_args: ['-mguard=none'], link_args: ['-Wl,-Xlink,-guard:no'])
