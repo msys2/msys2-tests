@@ -6,7 +6,10 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 if [[ "$MSYSTEM" != "MSYS" ]]
 then
-    generators=('Ninja' 'MSYS Makefiles' 'MinGW Makefiles')
+    generators=('Ninja' 'MSYS Makefiles')
+    if [[ "$MSYSTEM" != "MINGW32" ]]; then
+        generators+=('MinGW Makefiles')
+    fi
 else
     generators=('Ninja' 'Unix Makefiles')
 fi

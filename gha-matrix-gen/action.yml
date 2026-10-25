@@ -31,7 +31,6 @@ runs:
               f"{ entry['prefix'] }-meson",
               f"{ entry['prefix'] }-ninja",
               f"{ entry['prefix'] }-cmake",
-              f"{ entry['prefix'] }-make",
               f"{ entry['prefix'] }-{ entry['cc'] }",
               f"{ entry['prefix'] }-python",
               f"{ entry['prefix'] }-python-setuptools",
@@ -49,7 +48,10 @@ runs:
               'patch',
             ]
 
-            if 'clang-aarch64' not in entry['prefix']:
+            if 'i686' not in entry['prefix']:
+              entry['packages'].append(f"{ entry['prefix'] }-make")
+
+            if 'clang-aarch64' not in entry['prefix'] and 'i686' not in entry['prefix']:
               entry['packages'].append(f"{ entry['prefix'] }-gdb")
 
             if 'i686' not in entry['prefix']:
