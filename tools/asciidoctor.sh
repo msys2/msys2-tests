@@ -2,6 +2,11 @@
 
 set -e
 
+if [[ "$MSYSTEM" == "MINGW32" ]]; then
+    echo "skipped on $MSYSTEM"
+    exit 0;
+fi
+
 TEMPDIR=$(mktemp -d)
 trap 'rm -rf "$TEMPDIR"' EXIT
 
