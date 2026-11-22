@@ -43,6 +43,7 @@ runs:
               'fish',
               'openssh',
               'patch',
+              'grep',
             ]
 
             if 'i686' not in entry['prefix']:
@@ -102,6 +103,7 @@ runs:
               'rust',
               'openssh',
               'patch',
+              'grep',
             ]
           entry['packages'] = " ".join(entry['packages'])
 

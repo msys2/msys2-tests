@@ -21,3 +21,5 @@ fi
 ./openssh.sh
 
 ./patch.sh
+
+./grep.sh
